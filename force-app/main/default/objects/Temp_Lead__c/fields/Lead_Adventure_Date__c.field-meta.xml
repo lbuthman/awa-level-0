@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Lead_Adventure_Date__c</fullName>
+    <description>The general/speculative date for the lead&apos;s adventure excursion.</description>
+    <externalId>false</externalId>
+    <label>Lead Adventure Date</label>
+    <length>255</length>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>
