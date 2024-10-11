@@ -28,28 +28,26 @@ public with sharing class AdventureParkTrigger_Handler {
     }
 
     private static void getPricebooks(List<Adventure_Park__c> needPB) {
-        Map<Id, Pricebook2> pbMap = Methods_CommunitySite.createPB(needPB);
+        Map<Id, Pricebook2> pbMap = AdventureParkTrigger_Helper.createPB(needPB);
         for (Adventure_Park__c c : needPB) {
             if (pbMap.get(c.Id) != null) {
                 c.Price_Book__c = pbMap.get(c.Id).Id;
             }
-            c.RefreshProducts__c = true;
         }
     }
 
     public static void onAfterUpdate(Map<Id, Adventure_Park__c> newMap, Map<Id, Adventure_Park__c> oldMap) {
         Set<Id> commSiteIds = new Set<Id>();
         for (Id commId : newMap.keySet()) {
-            if (newMap.get(commId).Open_for_Sales__c != oldMap.get(commId).Open_for_Sales__c ||
-                newMap.get(commId).Active__c != oldMap.get(commId).Active__c ||
-                newMap.get(commId).Sold_Out__c != oldMap.get(commId).Sold_Out__c
+            if (newMap.get(commId).Open_Date__c != oldMap.get(commId).Open_Date__c ||
+                newMap.get(commId).Is_Active__c != oldMap.get(commId).Is_Active__c
             ) {
                 commSiteIds.add(commId);
             }
         }
 
         if (commSiteIds != null && !commSiteIds.isEmpty()) {
-            Database.executeBatch(new CommSiteToLeadContactUpdateBatch(commSiteIds));
+            //todo: close all related and inactivate all Parks of Interest
         }
     }
 }
