@@ -1,13 +1,13 @@
 //=================================================================================================
-// Company: TRI Pointe Group
-//  Author: Michael Mock (Birlasoft)
+// Company: Apex Backwoods Adventures
+//  Author: Sarah Sandbox
 // Created: 04/17/2017
 // Comment: CommunitySite trigger calling CommunitySite Trigger Handler Class
 //=================================================================================================
 //          Date            Purpose
 // Changes: 04/17/2017    Michael Mock (Birlasoft) Created
 //=================================================================================================
-trigger AdventurePark_Trigger on Adventure_Park__c (before insert, before update, before delete, after insert, after update, after delete) {
+trigger AdventureParkTrigger on Adventure_Park__c (before insert, before update, before delete, after insert, after update, after delete) {
 
     //After Insert
     if (Trigger.isAfter && Trigger.isInsert) {
