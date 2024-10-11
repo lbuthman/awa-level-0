@@ -2,37 +2,37 @@
 // Company: Apex Backwoods Adventures
 //  Author: Sarah Sandbox
 // Created: 04/17/2017
-// Comment: CommunitySite trigger calling CommunitySite Trigger Handler Class
+// Comment: AdventurePark trigger calling Adventure Park Trigger Handler Class
 //=================================================================================================
 //          Date            Purpose
-// Changes: 04/17/2017    Michael Mock (Birlasoft) Created
+// Changes: 04/17/2017    Sarah Sandbox Created
 //=================================================================================================
 trigger AdventureParkTrigger on Adventure_Park__c (before insert, before update, before delete, after insert, after update, after delete) {
 
     //After Insert
     if (Trigger.isAfter && Trigger.isInsert) {
-        // Akashdeep TPG-6384
-        ServiceTerritoryHandler.createTerritory(trigger.new,trigger.newmap,null);
+        // Tristan TPP-6384
+        EventHandler.createEvents(trigger.new,trigger.newmap,null);
     }
 
     //Before Insert
     if(Trigger.isBefore && Trigger.isInsert) {
-        CommunitySiteTriggerHandler.OnBeforeInsert(Trigger.new);
+        AdventureParkTrigger_Handler.OnBeforeInsert(Trigger.new);
     }
 
     //Before Update
     if (Trigger.isBefore && Trigger.isUpdate) {
-        CommunitySiteTriggerHandler.OnBeforeUpdate(Trigger.newMap,Trigger.oldMap);
+        AdventureParkTrigger_Handler.OnBeforeUpdate(Trigger.newMap,Trigger.oldMap);
     }
 
     //After Update
     if (Trigger.isAfter && Trigger.isUpdate) {
         //<Addition> Anmol Baweja 16-10-2018
         //<ReasonLead Lifecycle Project</Reason
-        CommunitySiteTriggerHandler.OnAfterUpdate(Trigger.newMap,Trigger.oldMap);
+        AdventureParkTrigger_Handler.OnAfterUpdate(Trigger.newMap,Trigger.oldMap);
         //</Addition>
-        // Akashdeep TPG-6384
-        ServiceTerritoryHandler.createTerritory(trigger.new,trigger.newmap,trigger.oldMap);
+        // Tristan TPP-6384
+        EventHandler.createEvents(trigger.new,trigger.newmap,null);
     }
 
     //After Delete
