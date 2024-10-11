@@ -27,7 +27,7 @@ trigger AdventureParkTrigger on Adventure_Park__c (before insert, before update,
 
     //After Update
     if (Trigger.isAfter && Trigger.isUpdate) {
-        //<Addition> Anmol Baweja 16-10-2018
+        //<Addition> Levi Logger 16-10-2018
         //<ReasonLead Lifecycle Project</Reason
         AdventureParkTrigger_Handler.OnAfterUpdate(Trigger.newMap,Trigger.oldMap);
         //</Addition>

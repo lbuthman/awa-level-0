@@ -2,13 +2,10 @@ public with sharing class AdventureParkTrigger_Handler {
 
     public static void onBeforeUpdate(Map<Id, Adventure_Park__c> newMap, Map<Id, Adventure_Park__c> oldMap) {
 
-        List<Schema.FieldSetMember> fields = SObjectType.Adventure_Park__c.fieldSets.CalculatingFields.getFields();
         List<Adventure_Park__c> needPB = new List<Adventure_Park__c>();
         for (Adventure_Park__c cs : newMap.values()) {
-            for (Schema.FieldSetMember f : fields) {
-                if (cs.get(f.getFieldPath()) != oldMap.get(cs.Id).get(f.getFieldPath())) {
-                    cs.RefreshProducts__c = true;
-                }
+            if (cs.Open_Date__c >= Date.today() && cs.Is_Active__c == false) {
+                cs.Is_Active__c = true;
             }
             if (cs.Price_Book__c == null) {
                 needPB.add(cs);
