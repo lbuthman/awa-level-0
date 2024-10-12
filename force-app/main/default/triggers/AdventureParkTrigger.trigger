@@ -5,7 +5,7 @@
 // Comment: AdventurePark trigger calling Adventure Park Trigger Handler Class
 //=================================================================================================
 //          Date            Purpose
-// Changes: 04/17/2017    Sarah Sandbox Created
+// Changes: 04/17/2017    Sarah Sandbox - Created
 //=================================================================================================
 trigger AdventureParkTrigger on Adventure_Park__c (before insert, before update, before delete, after insert, after update, after delete) {
 
