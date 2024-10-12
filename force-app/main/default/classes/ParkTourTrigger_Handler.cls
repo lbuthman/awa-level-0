@@ -60,23 +60,6 @@ public without sharing class ParkTourTrigger_Handler {
             communitiesOfInterestForUpdate = ParkTourTrigger_Helper.updatCOIRating(updateCOIList);
         }
 
-        List<Opportunity> opportunitiesToInsert = new List<Opportunity>();
-        if (newVisitsMap != null &&
-            !newVisitsMap.isEmpty() &&
-            (newVisitsMap != null || (masterPlannedCommunitySiteNameSet != null && !masterPlannedCommunitySiteNameSet.isEmpty()))
-        ) {
-            opportunitiesToInsert = ParkTourTrigger_Helper.createOpportunityUnderContact(Trigger.new, masterPlannedCommunitySiteNameSet);
-        }
-
-        Set<Opportunity> opportunities = new Set<Opportunity>();
-        for (Opportunity opportunity : opportunitiesToInsert) {
-            opportunities.add(opportunity);
-        }
-
-        if (opportunitiesToInsert != null && !opportunitiesToInsert.isEmpty()) {
-            insert new List<Opportunity>(opportunities);
-        }
-
         if (communitiesOfInterestForUpdate != null && !communitiesOfInterestForUpdate.isEmpty()) {
             update communitiesOfInterestForUpdate;
         }
@@ -161,17 +144,6 @@ public without sharing class ParkTourTrigger_Handler {
             collectAccountIdsBasedOnContacts(contactIds, accountIds);
             //todo: see note on previous code
             collectAccountIdToContactsMap(accountIds, accountToContactsMap);
-
-            if (newMap != null &&
-                !newMap.isEmpty() &&
-                (newMap != null || (masterPlanCommSite != null && !masterPlanCommSite.isEmpty()))
-            ) {
-                oppToInsert = ParkTourTrigger_Helper.createOpportunityUnderContact(Trigger.new, masterPlanCommSite);
-            }
-
-            if (oppToInsert != null && !oppToInsert.isEmpty()) {
-                insert oppToInsert;
-            }
         }
     }
 }

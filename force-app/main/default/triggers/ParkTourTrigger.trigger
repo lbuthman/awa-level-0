@@ -6,9 +6,6 @@ trigger ParkTourTrigger on Park_Tour__c (before insert, before update, after ins
         if(Trigger.isInsert){
             handler.onBeforeInsert(Trigger.new);
         }
-        if(Trigger.isDelete){
-            handler.onBeforeDelete(Trigger.oldMap);
-        }
     }
 
     if(Trigger.isAfter){

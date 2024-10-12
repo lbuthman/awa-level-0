@@ -237,7 +237,7 @@ leadToCommSiteToApptKept.put(t.WhoId,tempList);
         List<Lead> leadStatusToUpdate= new List<Lead>();
 
         //<Addition> 07/11/19 Aakanksha - Added Order By Clause in order to fetch records in ascending order so that the latest NHA user on site visit becomes the opportunity owner
-        for(Park_Tour__c sv: [SELECT Id, Lead__c,Adventure_Park__r.Name, Arrival_Time__c, Adventure_Park__c, Adventure_Park__r.Name, lead__r.IsConverted FROM Park_Tour__c WHERE Lead__c IN: leadIds AND Adventure_Park__c IN: commSiteIds order by Arrival_Time__c]){
+        for(Park_Tour__c sv: [SELECT Id, Lead__c,Adventure_Park__r.Name, Arrival_Time__c, Adventure_Park__c, lead__r.IsConverted FROM Park_Tour__c WHERE Lead__c IN: leadIds AND Adventure_Park__c IN: commSiteIds order by Arrival_Time__c]){
             //Convert lead if multiple site visit for same community site
             //<Addition> Garima- 25 may,2020
             //Added below code for checking Task and Site Visit CommSite, also Task Activity Date and Site Visit Arrival date
