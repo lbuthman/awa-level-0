@@ -1,4 +1,4 @@
-public with sharing class EventHandler {
+public with sharing class ServiceAppointmentHandler {
 
     public static void createOpeningEvents(List<Adventure_Park__c> newList, Map<Id, Adventure_Park__c> newmap, Map<Id, Adventure_Park__c> oldmap) {
         List<ServiceAppointment> InsertList = new List<ServiceAppointment>();
@@ -23,7 +23,9 @@ public with sharing class EventHandler {
                 ServiceAppointment newRecord = new ServiceAppointment();
                 newRecord.ParentRecordId = assetsByAccount.get(account.Id).Id;
                 newRecord.Status = each.Open_Date__c == Date.today() ? 'In Progress' : 'Scheduled';
-                //todo: do more with Service Appointment
+                newRecord.EarliestStartTime = Datetime.newInstance(each.Open_Date__c, Time.newInstance(9, 0, 0, 0));
+                newRecord.DueDate = Datetime.newInstance(each.Open_Date__c, Time.newInstance(9, 0, 0, 0)).addDays(7);
+                newRecord.Subject = 'Opening Day Party Kickoff!';
                 InsertList.add(newRecord);
             }
 
@@ -56,7 +58,9 @@ public with sharing class EventHandler {
                         ServiceAppointment newRecord = new ServiceAppointment();
                         newRecord.ParentRecordId = assetsByAccount.get(account.Id).Id;
                         newRecord.Status = each.Open_Date__c == Date.today() ? 'In Progress' : 'Scheduled';
-                        //todo: do more with Service Appointment
+                        newRecord.EarliestStartTime = Datetime.newInstance(each.Open_Date__c, Time.newInstance(9, 0, 0, 0));
+                        newRecord.DueDate = Datetime.newInstance(each.Open_Date__c, Time.newInstance(9, 0, 0, 0)).addDays(7);
+                        newRecord.Subject = 'Opening Day Party Kickoff!';
                         InsertList.add(newRecord);
                     }
                 }
