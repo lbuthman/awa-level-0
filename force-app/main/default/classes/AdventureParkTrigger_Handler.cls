@@ -36,6 +36,10 @@ public with sharing class AdventureParkTrigger_Handler {
         }
     }
 
+    public static void onAfterInsert(List<Adventure_Park__c> newParks) {
+        //todo: Productize, Create Account, and Asset
+    }
+
     public static void onAfterUpdate(Map<Id, Adventure_Park__c> newMap, Map<Id, Adventure_Park__c> oldMap) {
         Set<Id> commSiteIds = new Set<Id>();
         for (Id commId : newMap.keySet()) {

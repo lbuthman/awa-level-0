@@ -13,7 +13,7 @@ public with sharing class EventHandler {
             if (oldmap != null && !oldmap.isEmpty()) {
                 oldRecord = oldmap.get(each.Id);
             }
-            if (each.Active__c && each.Walk_In_Form_Available__c && Trigger.isInsert) {
+            if (each.Is_Active__c && each.Open_Date__c >= Date.today() && Trigger.isInsert) {
                 ServiceTerritory newRecord = new ServiceTerritory();
                 if (op != null && !op.isEmpty()) {
                     newRecord.OperatingHoursId = op[0].Id;
