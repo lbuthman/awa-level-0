@@ -47,14 +47,6 @@ public without sharing class ParkTourTrigger_Handler {
         }
 
         Set<Id> accountIds = new Set<Id>();
-        Set<String> masterPlannedCommunitySiteNameSet = new Set<String>();
-        collectAccountIdsBasedOnContacts(contactIds, accountIds);
-
-        Map<Id, List<Contact>> accountIdToContacts = new Map<Id, List<Contact>>();
-        //todo: interestingly first we use Contact Ids to collect Account Ids, then turn right around and
-        //  use the Account Ids to collect Contacts ...
-        collectAccountIdToContactsMap(accountIds, accountIdToContacts);
-
         List<Park_Of_Interest__c> communitiesOfInterestForUpdate = new List<Park_Of_Interest__c>();
         if (updateCOIList != null && !updateCOIList.isEmpty()) {
             communitiesOfInterestForUpdate = ParkTourTrigger_Helper.updatCOIRating(updateCOIList);
@@ -62,36 +54,6 @@ public without sharing class ParkTourTrigger_Handler {
 
         if (communitiesOfInterestForUpdate != null && !communitiesOfInterestForUpdate.isEmpty()) {
             update communitiesOfInterestForUpdate;
-        }
-    }
-
-    private static void collectAccountIdsBasedOnContacts(Set<Id> contactIds, Set<Id> accountIds) {
-        if (contactIds != null && !contactIds.isEmpty()) {
-            for (Contact contact : [SELECT Id, Name, AccountId FROM Contact WHERE Id IN :contactIds]) {
-                accountIds.add(contact.AccountId);
-            }
-        }
-    }
-
-    private static void collectAccountIdToContactsMap(Set<Id> accountIds, Map<Id, List<Contact>> accountToContactsMap) {
-        if (accountIds != null && !accountIds.isEmpty()) {
-            for (Contact contact : [SELECT Id, Name, AccountId FROM Contact WHERE AccountId IN :accountIds]) {
-
-                //todo: ignoring intra-class duplicate code fragments for now
-                if (accountToContactsMap != null &&
-                    accountToContactsMap.containsKey(contact.AccountId) &&
-                    accountToContactsMap.get(contact.AccountId) != null
-                ) {
-                    List<Contact> tempCon = accountToContactsMap.get(contact.AccountId);
-                    tempCon.add(contact);
-                    accountToContactsMap.put(contact.AccountId, tempCon);
-                }
-                else {
-                    accountToContactsMap.put(contact.AccountId, new List<Contact>{
-                        contact
-                    });
-                }
-            }
         }
     }
 
@@ -113,37 +75,6 @@ public without sharing class ParkTourTrigger_Handler {
 
         if (coisForUpdate != null && !coisForUpdate.isEmpty()) {
             update coisForUpdate;
-        }
-
-        Set<Id> leadIds = new Set<Id>();
-        Set<Id> comSites = new Set<Id>();
-        Set<Id> contactIds = new Set<Id>();
-        Set<Id> accountIds = new Set<Id>();
-        Map<Id, List<Contact>> accountToContactsMap = new Map<Id, List<Contact>>();
-        List<Opportunity> oppToInsert = new List<Opportunity>();
-        Set<String> masterPlanCommSite = new Set<String>();
-        Set<Id> masterPlannedCommunities = new Set<Id>();
-        Boolean doNotUpdate = false;
-
-        for (Park_Tour__c sv : newMap.values()) {
-            if (sv.Lead__c != null) {
-                leadIds.add(sv.Lead__c);
-            }
-            if (sv.Adventure_Park__c != null) {
-                comSites.add(sv.Adventure_Park__c);
-            }
-            if (sv.Contact__c != null) {
-                contactIds.add(sv.Contact__c);
-            }
-            if (sv.CreatedDate.date() != sv.LastModifiedDate.date()) {
-                doNotUpdate = true;
-            }
-        }
-
-        if (!doNotUpdate) {
-            collectAccountIdsBasedOnContacts(contactIds, accountIds);
-            //todo: see note on previous code
-            collectAccountIdToContactsMap(accountIds, accountToContactsMap);
         }
     }
 }
