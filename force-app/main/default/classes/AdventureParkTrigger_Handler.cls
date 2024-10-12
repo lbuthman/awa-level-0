@@ -3,24 +3,27 @@ public with sharing class AdventureParkTrigger_Handler {
     public static void onBeforeUpdate(Map<Id, Adventure_Park__c> newMap, Map<Id, Adventure_Park__c> oldMap) {
 
         List<Adventure_Park__c> needPB = new List<Adventure_Park__c>();
-        for (Adventure_Park__c cs : newMap.values()) {
-            if (cs.Open_Date__c >= Date.today() && cs.Is_Active__c == false) {
-                cs.Is_Active__c = true;
+        for (Adventure_Park__c park : newMap.values()) {
+            if (park.Open_Date__c >= Date.today() && park.Is_Active__c == false) {
+                park.Is_Active__c = true;
             }
-            if (cs.Price_Book__c == null) {
-                needPB.add(cs);
+            if (park.Price_Book__c == null) {
+                needPB.add(park);
+            }
+            if (park.Is_Active__c == false && park.Open_Date__c > Date.today()) {
+                park.Inactivated_Date__c = Date.today();
             }
         }
         getPricebooks(needPB);
 
     }
 
-    public static void onBeforeInsert(List<Adventure_Park__c> comms) {
+    public static void onBeforeInsert(List<Adventure_Park__c> parks) {
 
         List<Adventure_Park__c> needPB = new List<Adventure_Park__c>();
-        for (Adventure_Park__c c : comms) {
-            if (c.Price_Book__c == null) {
-                needPB.add(c);
+        for (Adventure_Park__c p : parks) {
+            if (p.Price_Book__c == null) {
+                needPB.add(p);
             }
         }
         getPricebooks(needPB);
@@ -29,9 +32,9 @@ public with sharing class AdventureParkTrigger_Handler {
 
     private static void getPricebooks(List<Adventure_Park__c> needPB) {
         Map<Id, Pricebook2> pbMap = AdventureParkTrigger_Helper.createPB(needPB);
-        for (Adventure_Park__c c : needPB) {
-            if (pbMap.get(c.Id) != null) {
-                c.Price_Book__c = pbMap.get(c.Id).Id;
+        for (Adventure_Park__c p : needPB) {
+            if (pbMap.get(p.Id) != null) {
+                p.Price_Book__c = pbMap.get(p.Id).Id;
             }
         }
     }
@@ -46,7 +49,8 @@ public with sharing class AdventureParkTrigger_Handler {
 
             Account account = new Account(
                 Name = park.Name + ' Account',
-                Adventure_Park__c = park.Id
+                Adventure_Park__c = park.Id,
+                AccountSource = 'Automation'
             );
             accounts.add(account);
 
@@ -99,18 +103,26 @@ public with sharing class AdventureParkTrigger_Handler {
         }
     }
 
-    public static void onAfterUpdate(Map<Id, Adventure_Park__c> newMap, Map<Id, Adventure_Park__c> oldMap) {
-        Set<Id> commSiteIds = new Set<Id>();
-        for (Id commId : newMap.keySet()) {
-            if (newMap.get(commId).Open_Date__c != oldMap.get(commId).Open_Date__c ||
-                newMap.get(commId).Is_Active__c != oldMap.get(commId).Is_Active__c
-            ) {
-                commSiteIds.add(commId);
+    public static void OnAfterUpdate(Map<Id, Adventure_Park__c> newMap, Map<Id, Adventure_Park__c> oldMap) {
+        Set<Id> parksIds = new Set<Id>();
+        for (Id parkId : newMap.keySet()) {
+            if (newMap.get(parkId).Open_Date__c > Date.today() && newMap.get(parkId).Is_Active__c != oldMap.get(parkId).Is_Active__c && !newMap.get(parkId).Is_Active__c && newMap.get(parkId).Inactivated_Date__c != null) {
+                parksIds.add(parkId);
             }
         }
 
-        if (commSiteIds != null && !commSiteIds.isEmpty()) {
-            //todo: close all related and inactivate all Parks of Interest
+        if (parksIds != null && !parksIds.isEmpty()) {
+            List<Park_Of_Interest__c> parkOfInterests = new List<Park_Of_Interest__c>();
+            for (Park_Of_Interest__c parkOfInterest: [
+                SELECT Inactive__c, Adventure_Park__c
+                FROM Park_Of_Interest__c
+                WHERE Adventure_Park__c IN :oldMap.keySet()
+            ]) {
+                parkOfInterest.Inactive__c = true;
+                parkOfInterest.Inactivated_Date__c = newMap.get(parkOfInterest.Adventure_Park__c).Inactivated_Date__c;
+                parkOfInterests.add(parkOfInterest);
+            }
+            update parkOfInterests;
         }
     }
 }
