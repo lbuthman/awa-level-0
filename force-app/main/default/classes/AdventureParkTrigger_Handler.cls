@@ -10,7 +10,7 @@ public with sharing class AdventureParkTrigger_Handler {
             if (park.Price_Book__c == null) {
                 needPB.add(park);
             }
-            if (park.Is_Active__c == false && park.Open_Date__c > Date.today()) {
+            if (park.Is_Active__c == false && park.Open_Date__c < Date.today()) {
                 park.Inactivated_Date__c = Date.today();
             }
         }
@@ -42,48 +42,27 @@ public with sharing class AdventureParkTrigger_Handler {
     public static void onAfterInsert(List<Adventure_Park__c> newParks) {
         Pricebook2 standardPriceBook = [SELECT Id, IsActive FROM Pricebook2 WHERE IsStandard = TRUE LIMIT 1];
         List<Account> accounts = new List<Account>();
+        Map<Id, Account> accountByParkId  = new Map<Id, Account>();
         List<Product2> products = new List<Product2>();
         List<PricebookEntry> pricebookEntries = new List<PricebookEntry>();
         List<Asset> assets = new List<Asset>();
+        Map<Id, Product2> productbyParkId = new Map<Id, Product2>();
         for (Adventure_Park__c park : newParks) {
-
             Account account = new Account(
                 Name = park.Name + ' Account',
                 Adventure_Park__c = park.Id,
                 AccountSource = 'Automation'
             );
             accounts.add(account);
+            accountByParkId.put(park.Id,account);
 
             Product2 product = new Product2(
                 Name = park.Name + ' Product',
+                Adventure_Park__c = park.Id,
                 IsActive = true
             );
             products.add(product);
-
-            // Create a Pricebook Entry in the Standard Price Book
-            PricebookEntry standardPBE = new PricebookEntry(
-                Pricebook2Id = standardPriceBook.Id,
-                Product2Id = product.Id,
-                UnitPrice = park.Admission_Price__c,
-                IsActive = true
-            );
-            pricebookEntries.add(standardPBE);
-
-            // Create a Pricebook Entry in the Custom Price Book
-            PricebookEntry customPBE = new PricebookEntry(
-                Pricebook2Id = park.Price_Book__c,
-                Product2Id = product.Id,
-                UnitPrice = park.Admission_Price__c,
-                IsActive = true
-            );
-            pricebookEntries.add(customPBE);
-
-            Asset asset = new Asset(
-                Name = park.Name + ' Asset',
-                Product2Id = product.Id,
-                AccountId = account.Id
-            );
-            assets.add(asset);
+            productbyParkId.put(park.Id, product);
         }
 
         if (!accounts.isEmpty()) {
@@ -92,6 +71,33 @@ public with sharing class AdventureParkTrigger_Handler {
 
         if (!products.isEmpty()) {
             insert products;
+        }
+
+        for (Adventure_Park__c park: newParks) {
+            // Create a Pricebook Entry in the Standard Price Book
+            PricebookEntry standardPBE = new PricebookEntry(
+                Pricebook2Id = standardPriceBook.Id,
+                Product2Id = productbyParkId.get(park.Id).Id,
+                UnitPrice = park.Admission_Price__c,
+                IsActive = true
+            );
+            pricebookEntries.add(standardPBE);
+
+            // Create a Pricebook Entry in the Custom Price Book
+            PricebookEntry customPBE = new PricebookEntry(
+                Pricebook2Id = park.Price_Book__c,
+                Product2Id = productbyParkId.get(park.Id).Id,
+                UnitPrice = park.Admission_Price__c,
+                IsActive = true
+            );
+            pricebookEntries.add(customPBE);
+
+            Asset asset = new Asset(
+                Name = park.Name + ' Asset',
+                Product2Id = productbyParkId.get(park.Id).Id,
+                AccountId = accountByParkId.get(park.Id).Id
+            );
+            assets.add(asset);
         }
 
         if (!pricebookEntries.isEmpty()) {
@@ -106,7 +112,7 @@ public with sharing class AdventureParkTrigger_Handler {
     public static void OnAfterUpdate(Map<Id, Adventure_Park__c> newMap, Map<Id, Adventure_Park__c> oldMap) {
         Set<Id> parksIds = new Set<Id>();
         for (Id parkId : newMap.keySet()) {
-            if (newMap.get(parkId).Open_Date__c > Date.today() && newMap.get(parkId).Is_Active__c != oldMap.get(parkId).Is_Active__c && !newMap.get(parkId).Is_Active__c && newMap.get(parkId).Inactivated_Date__c != null) {
+            if (newMap.get(parkId).Open_Date__c < Date.today() && newMap.get(parkId).Is_Active__c != oldMap.get(parkId).Is_Active__c && !newMap.get(parkId).Is_Active__c && newMap.get(parkId).Inactivated_Date__c != null) {
                 parksIds.add(parkId);
             }
         }
