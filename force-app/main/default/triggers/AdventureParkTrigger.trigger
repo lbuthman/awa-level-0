@@ -13,7 +13,7 @@ trigger AdventureParkTrigger on Adventure_Park__c (before insert, before update,
     if (Trigger.isAfter && Trigger.isInsert) {
         // Tristan TPP-6384
         AdventureParkTrigger_Handler.onAfterInsert(trigger.new);
-        ServiceAppointmentHandler.createOpeningEvents(trigger.new,trigger.newmap,null);
+        ServiceAppointmentHandler.createOpeningAppointments(trigger.new,trigger.newmap,null);
     }
 
     //Before Insert
@@ -33,7 +33,7 @@ trigger AdventureParkTrigger on Adventure_Park__c (before insert, before update,
         AdventureParkTrigger_Handler.OnAfterUpdate(Trigger.newMap,Trigger.oldMap);
         //</Addition>
         // Tristan TPP-6384
-        ServiceAppointmentHandler.createOpeningEvents(trigger.new,trigger.newmap,null);
+        ServiceAppointmentHandler.createOpeningAppointments(trigger.new,trigger.newmap,null);
     }
 
     //After Delete

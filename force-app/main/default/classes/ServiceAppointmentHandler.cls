@@ -1,6 +1,6 @@
 public with sharing class ServiceAppointmentHandler {
 
-    public static void createOpeningEvents(List<Adventure_Park__c> newList, Map<Id, Adventure_Park__c> newmap, Map<Id, Adventure_Park__c> oldmap) {
+    public static void createOpeningAppointments(List<Adventure_Park__c> newList, Map<Id, Adventure_Park__c> newmap, Map<Id, Adventure_Park__c> oldmap) {
         List<ServiceAppointment> InsertList = new List<ServiceAppointment>();
         List<ServiceAppointment> UpdateList = new List<ServiceAppointment>();
         Map<Id, ServiceAppointment> mapOfParkIdtoAppointment = new Map<Id, ServiceAppointment>();
@@ -12,7 +12,7 @@ public with sharing class ServiceAppointmentHandler {
         for (Asset asset: [SELECT AccountId FROM Asset WHERE AccountId IN :accountByParkId.values()]) {
             assetsByAccount.put(asset.AccountId, asset);
         }
-        Set<Id> csIds = new Set<Id>();
+        Set<Id> parkIds = new Set<Id>();
         for (Adventure_Park__c each : newList) {
             Adventure_Park__c oldRecord;
             if (oldmap != null && !oldmap.isEmpty()) {
@@ -30,12 +30,12 @@ public with sharing class ServiceAppointmentHandler {
             }
 
             if (oldRecord != null && (each.Is_Active__c != oldRecord.Is_Active__c)) {
-                csIds.add(each.Id);
+                parkIds.add(each.Id);
 
             }
         }
         System.debug('@@###' + mapOfParkIdtoAppointment);
-        for (ServiceAppointment each : [SELECT Id, Account.Adventure_Park__c, Status FROM ServiceAppointment WHERE Account.Adventure_Park__c IN :csIds]) {
+        for (ServiceAppointment each : [SELECT Id, Account.Adventure_Park__c, Status FROM ServiceAppointment WHERE Account.Adventure_Park__c IN :parkIds]) {
             mapOfParkIdtoAppointment.put(each.Account.Adventure_Park__c, each);
         }
         for (Adventure_Park__c each : newList) {
