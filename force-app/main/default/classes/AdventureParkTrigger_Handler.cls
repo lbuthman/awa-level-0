@@ -37,7 +37,66 @@ public with sharing class AdventureParkTrigger_Handler {
     }
 
     public static void onAfterInsert(List<Adventure_Park__c> newParks) {
-        //todo: Productize, Create Account, and Asset
+        Pricebook2 standardPriceBook = [SELECT Id, IsActive FROM Pricebook2 WHERE IsStandard = TRUE LIMIT 1];
+        List<Account> accounts = new List<Account>();
+        List<Product2> products = new List<Product2>();
+        List<PricebookEntry> pricebookEntries = new List<PricebookEntry>();
+        List<Asset> assets = new List<Asset>();
+        for (Adventure_Park__c park : newParks) {
+
+            Account account = new Account(
+                Name = park.Name + ' Account',
+                Adventure_Park__c = park.Id
+            );
+            accounts.add(account);
+
+            Product2 product = new Product2(
+                Name = park.Name + ' Product',
+                IsActive = true
+            );
+            products.add(product);
+
+            // Create a Pricebook Entry in the Standard Price Book
+            PricebookEntry standardPBE = new PricebookEntry(
+                Pricebook2Id = standardPriceBook.Id,
+                Product2Id = product.Id,
+                UnitPrice = park.Admission_Price__c,
+                IsActive = true
+            );
+            pricebookEntries.add(standardPBE);
+
+            // Create a Pricebook Entry in the Custom Price Book
+            PricebookEntry customPBE = new PricebookEntry(
+                Pricebook2Id = park.Price_Book__c,
+                Product2Id = product.Id,
+                UnitPrice = park.Admission_Price__c,
+                IsActive = true
+            );
+            pricebookEntries.add(customPBE);
+
+            Asset asset = new Asset(
+                Name = park.Name + ' Asset',
+                Product2Id = product.Id,
+                AccountId = account.Id
+            );
+            assets.add(asset);
+        }
+
+        if (!accounts.isEmpty()) {
+            insert accounts;
+        }
+
+        if (!products.isEmpty()) {
+            insert products;
+        }
+
+        if (!pricebookEntries.isEmpty()) {
+            insert pricebookEntries;
+        }
+
+        if (!assets.isEmpty()) {
+            insert assets;
+        }
     }
 
     public static void onAfterUpdate(Map<Id, Adventure_Park__c> newMap, Map<Id, Adventure_Park__c> oldMap) {

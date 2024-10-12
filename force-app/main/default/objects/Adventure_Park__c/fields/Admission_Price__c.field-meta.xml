@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Admission_Price__c</fullName>
+    <defaultValue>0</defaultValue>
+    <description>The cost for each adventure admission. Each park has a flat rate for park admission.</description>
+    <label>Admission Price</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <trackTrending>false</trackTrending>
+    <type>Currency</type>
+</CustomField>

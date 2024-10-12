@@ -12,6 +12,7 @@ trigger AdventureParkTrigger on Adventure_Park__c (before insert, before update,
     //After Insert
     if (Trigger.isAfter && Trigger.isInsert) {
         // Tristan TPP-6384
+        AdventureParkTrigger_Handler.onAfterInsert(trigger.new);
         EventHandler.createOpeningEvents(trigger.new,trigger.newmap,null);
     }
 

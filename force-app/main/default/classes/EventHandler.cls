@@ -1,71 +1,62 @@
 public with sharing class EventHandler {
 
     public static void createOpeningEvents(List<Adventure_Park__c> newList, Map<Id, Adventure_Park__c> newmap, Map<Id, Adventure_Park__c> oldmap) {
-        List<ServiceTerritory> InsertList = new List<ServiceTerritory>();
-        List<ServiceTerritory> UpdateList = new List<ServiceTerritory>();
-        Map<Id, ServiceTerritory> mapOfCsIdtoTerritory = new Map<Id, ServiceTerritory>();
-        List<ServiceTerritoryWorkType> InsertListSWT = new List<ServiceTerritoryWorkType>();
-        List<OperatingHours> op = [SELECT Id, Name FROM OperatingHours WHERE Name LIKE '%US Hours%'];
-        List<WorkType> leadWorkTypes = [SELECT Id, Name FROM WorkType WHERE Type__c = :'Lead'];
+        List<ServiceAppointment> InsertList = new List<ServiceAppointment>();
+        List<ServiceAppointment> UpdateList = new List<ServiceAppointment>();
+        Map<Id, ServiceAppointment> mapOfParkIdtoAppointment = new Map<Id, ServiceAppointment>();
+        Map<Id, Account> accountByParkId = new Map<Id, Account>();
+        for (Account account: [SELECT Adventure_Park__c FROM Account WHERE Adventure_Park__c IN :newList]) {
+            accountByParkId.put(account.Adventure_Park__c, account);
+        }
+        Map<Id, Asset> assetsByAccount = new Map<Id, Asset>();
+        for (Asset asset: [SELECT AccountId FROM Asset WHERE AccountId IN :accountByParkId.values()]) {
+            assetsByAccount.put(asset.AccountId, asset);
+        }
         Set<Id> csIds = new Set<Id>();
         for (Adventure_Park__c each : newList) {
             Adventure_Park__c oldRecord;
             if (oldmap != null && !oldmap.isEmpty()) {
                 oldRecord = oldmap.get(each.Id);
             }
-            if (each.Is_Active__c && each.Open_Date__c >= Date.today() && Trigger.isInsert) {
-                ServiceTerritory newRecord = new ServiceTerritory();
-                if (op != null && !op.isEmpty()) {
-                    newRecord.OperatingHoursId = op[0].Id;
-                }
-                newRecord.Name = each.Name;
-                newRecord.IsActive = true;
-                newRecord.PostalCode = each.Postal_Code__c;
-                newRecord.StateCode = each.State__c;
-                newRecord.CountryCode = 'US';
-                newRecord.Street = each.Address_Line_1__c;
-                newRecord.City = each.City__c;
-                newRecord.Adventure_Park__c = each.Id;
+            if (each.Is_Active__c && Trigger.isInsert) {
+                Account account = accountByParkId.get(each.Id);
+                ServiceAppointment newRecord = new ServiceAppointment();
+                newRecord.ParentRecordId = assetsByAccount.get(account.Id).Id;
+                newRecord.Status = each.Open_Date__c == Date.today() ? 'In Progress' : 'Scheduled';
+                //todo: do more with Service Appointment
                 InsertList.add(newRecord);
             }
 
-            if (oldRecord != null && (each.Active__c != oldRecord.Active__c || each.Walk_In_Form_Available__c != oldRecord.Walk_In_Form_Available__c)) {
+            if (oldRecord != null && (each.Is_Active__c != oldRecord.Is_Active__c)) {
                 csIds.add(each.Id);
 
             }
         }
-        System.debug('@@###' + mapOfCsIdtoTerritory);
-        for (ServiceTerritory each : [SELECT Id, Adventure_Park__c, IsActive FROM ServiceTerritory WHERE Adventure_Park__c IN :csIds]) {
-            mapOfCsIdtoTerritory.put(each.Adventure_Park__c, each);
+        System.debug('@@###' + mapOfParkIdtoAppointment);
+        for (ServiceAppointment each : [SELECT Id, Account.Adventure_Park__c, Status FROM ServiceAppointment WHERE Account.Adventure_Park__c IN :csIds]) {
+            mapOfParkIdtoAppointment.put(each.Account.Adventure_Park__c, each);
         }
         for (Adventure_Park__c each : newList) {
             Adventure_Park__c oldRecord;
             if (oldmap != null && !oldmap.isEmpty()) {
                 oldRecord = oldmap.get(each.Id);
-                if (((!each.Active__c && oldRecord.Active__c) || (!each.Walk_In_Form_Available__c && oldRecord.Walk_In_Form_Available__c)) && mapOfCsIdtoTerritory != null && !mapOfCsIdtoTerritory.isEmpty() && mapOfCsIdtoTerritory.containsKey(each.Id)) {
-                    ServiceTerritory updateRecord = mapOfCsIdtoTerritory.get(each.Id);
-                    updateRecord.IsActive = false;
+                if (((!each.Is_Active__c && oldRecord.Is_Active__c)) && mapOfParkIdtoAppointment != null && !mapOfParkIdtoAppointment.isEmpty() && mapOfParkIdtoAppointment.containsKey(each.Id)) {
+                    ServiceAppointment updateRecord = mapOfParkIdtoAppointment.get(each.Id);
+                    updateRecord.Status = 'None';
                     UpdateList.add(updateRecord);
                 }
-                if ((each.Active__c && !oldRecord.Active__c && each.Walk_In_Form_Available__c) || (each.Walk_In_Form_Available__c && !oldRecord.Walk_In_Form_Available__c && each.Active__c)) {
-                    if (mapOfCsIdtoTerritory != null && !mapOfCsIdtoTerritory.isEmpty() && mapOfCsIdtoTerritory.containsKey(each.Id)) {
-                        ServiceTerritory updateRecord = mapOfCsIdtoTerritory.get(each.Id);
-                        updateRecord.IsActive = true;
+                if ((each.Is_Active__c && !oldRecord.Is_Active__c)) {
+                    if (mapOfParkIdtoAppointment != null && !mapOfParkIdtoAppointment.isEmpty() && mapOfParkIdtoAppointment.containsKey(each.Id)) {
+                        ServiceAppointment updateRecord = mapOfParkIdtoAppointment.get(each.Id);
+                        updateRecord.Status = each.Open_Date__c == Date.today() ? 'In Progress' : 'Scheduled';
                         UpdateList.add(updateRecord);
                     }
                     else {
-                        ServiceTerritory newRecord = new ServiceTerritory();
-                        if (op != null && !op.isEmpty()) {
-                            newRecord.OperatingHoursId = op[0].Id;
-                        }
-                        newRecord.Name = each.Name;
-                        newRecord.IsActive = true;
-                        newRecord.PostalCode = each.Postal_Code__c;
-                        newRecord.StateCode = each.State__c;
-                        newRecord.CountryCode = 'US';
-                        newRecord.Street = each.Address_Line_1__c;
-                        newRecord.City = each.City__c;
-                        newRecord.Adventure_Park__c = each.Id;
+                        Account account = accountByParkId.get(each.Id);
+                        ServiceAppointment newRecord = new ServiceAppointment();
+                        newRecord.ParentRecordId = assetsByAccount.get(account.Id).Id;
+                        newRecord.Status = each.Open_Date__c == Date.today() ? 'In Progress' : 'Scheduled';
+                        //todo: do more with Service Appointment
                         InsertList.add(newRecord);
                     }
                 }
@@ -76,18 +67,6 @@ public with sharing class EventHandler {
         }
         if (UpdateList != null && !UpdateList .isEmpty()) {
             update UpdateList ;
-        }
-
-        for (ServiceTerritory each : InsertList) {
-            for (WorkType wt : leadWorkTypes) {
-                ServiceTerritoryWorkType swt = new ServiceTerritoryWorkType();
-                swt.ServiceTerritoryId = each.Id;
-                swt.WorkTypeId = wt.Id;
-                InsertListSWT.add(swt);
-            }
-        }
-        if (InsertListSWT != null && !InsertListSWT .isEmpty()) {
-            insert InsertListSWT;
         }
     }
 }
