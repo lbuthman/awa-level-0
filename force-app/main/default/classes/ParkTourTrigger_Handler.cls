@@ -1,80 +1,76 @@
 public without sharing class ParkTourTrigger_Handler {
 
-    public void onBeforeInsert(List<Park_Tour__c> newSiteVisits) {
-        List<Park_Tour__c> siteVisitsForCommunityOfInterestRatingUpdate = new List<Park_Tour__c>();
-        List<Park_Tour__c> siteVisitsToUpdateReturnVisitorAndMaybeAccountId = new List<Park_Tour__c>();
-        for (Park_Tour__c newSiteVisit : newSiteVisits) {
-            //When Park_Interest_Rating__c is not populated. Comes from Walk In Form
-            if (newSiteVisit.Park_Interest_Rating__c == null) {
-                siteVisitsForCommunityOfInterestRatingUpdate.add(newSiteVisit);
+    public void onBeforeInsert(List<Park_Tour__c> newParkTours) {
+        List<Park_Tour__c> parkTourForParkOfInterestRatingUpdate = new List<Park_Tour__c>();
+        List<Park_Tour__c> parkToursToUpdateReturnVisitorAndMaybeAccountId = new List<Park_Tour__c>();
+        for (Park_Tour__c newSiteVisitParkTour : newParkTours) {
+            if (newSiteVisitParkTour.Park_Interest_Rating__c == null) {
+                parkTourForParkOfInterestRatingUpdate.add(newSiteVisitParkTour);
             }
-            siteVisitsToUpdateReturnVisitorAndMaybeAccountId.add(newSiteVisit);
+            parkToursToUpdateReturnVisitorAndMaybeAccountId.add(newSiteVisitParkTour);
         }
 
-        if (siteVisitsForCommunityOfInterestRatingUpdate.size() > 0) {
-            ParkTourTrigger_Helper.getCOIrating(siteVisitsForCommunityOfInterestRatingUpdate);
+        if (parkTourForParkOfInterestRatingUpdate.size() > 0) {
+            ParkTourTrigger_Helper.getPOIrating(parkTourForParkOfInterestRatingUpdate);
         }
 
-        if (siteVisitsToUpdateReturnVisitorAndMaybeAccountId.size() > 0) {
-            ParkTourTrigger_Helper.checkNewVisitor(siteVisitsToUpdateReturnVisitorAndMaybeAccountId);
+        if (parkToursToUpdateReturnVisitorAndMaybeAccountId.size() > 0) {
+            ParkTourTrigger_Helper.checkNewVisitor(parkToursToUpdateReturnVisitorAndMaybeAccountId);
         }
     }
 
-    public void onAfterInsert(List<Park_Tour__c> newList, Map<Id, Park_Tour__c> newVisitsMap) {
-        List<Park_Tour__c> updateCOIList = new List<Park_Tour__c>();
+    public void onAfterInsert(List<Park_Tour__c> newList, Map<Id, Park_Tour__c> newToursMap) {
+        List<Park_Tour__c> updatePOIList = new List<Park_Tour__c>();
         Set<Id> leadIds = new Set<Id>();
-        Set<Id> communitySiteIds = new Set<Id>();
+        Set<Id> parkIds = new Set<Id>();
         Set<Id> contactIds = new Set<Id>();
-        //todo: I question the need for the Map<Id, SiteVisit__c>
-        //      - validate in dependencies
-        //      - refactor in Trigger
-        for (Park_Tour__c newSiteVisit : newVisitsMap.values()) {
-            if (newSiteVisit.Park_Interest_Rating__c != null && newSiteVisit.POI_Synced_On_Insert__c == false) {
+        for (Park_Tour__c newParkTour : newToursMap.values()) {
+            if (newParkTour.Park_Interest_Rating__c != null && newParkTour.POI_Synced_On_Insert__c == false) {
 
-                if (!updateCOIList.contains(newSiteVisit)) {
-                    updateCOIList.add(newSiteVisit);
+                if (!updatePOIList.contains(newParkTour)) {
+                    updatePOIList.add(newParkTour);
                 }
             }
-            if (newSiteVisit.Lead__c != null) {
-                leadIds.add(newSiteVisit.Lead__c);
+            if (newParkTour.Lead__c != null) {
+                leadIds.add(newParkTour.Lead__c);
             }
-            if (newSiteVisit.Adventure_Park__c != null) {
-                communitySiteIds.add(newSiteVisit.Adventure_Park__c);
+            if (newParkTour.Adventure_Park__c != null) {
+                parkIds.add(newParkTour.Adventure_Park__c);
             }
-            if (newSiteVisit.Contact__c != null) {
-                contactIds.add(newSiteVisit.Contact__c);
+            if (newParkTour.Contact__c != null) {
+                contactIds.add(newParkTour.Contact__c);
             }
         }
 
         Set<Id> accountIds = new Set<Id>();
-        List<Park_Of_Interest__c> communitiesOfInterestForUpdate = new List<Park_Of_Interest__c>();
-        if (updateCOIList != null && !updateCOIList.isEmpty()) {
-            communitiesOfInterestForUpdate = ParkTourTrigger_Helper.updatCOIRating(updateCOIList);
+        List<Park_Of_Interest__c> parksOfInterestForUpdate = new List<Park_Of_Interest__c>();
+        if (updatePOIList != null && !updatePOIList.isEmpty()) {
+            parksOfInterestForUpdate = ParkTourTrigger_Helper.updatPOIRating(updatePOIList);
         }
 
-        if (communitiesOfInterestForUpdate != null && !communitiesOfInterestForUpdate.isEmpty()) {
-            update communitiesOfInterestForUpdate;
+        if (parksOfInterestForUpdate != null && !parksOfInterestForUpdate.isEmpty()) {
+            update parksOfInterestForUpdate;
         }
     }
 
     public void onAfterUpdate(Map<Id, Park_Tour__c> newMap, Map<Id, Park_Tour__c> oldMap) {
-        List<Park_Tour__c> updateCOIList = new List<Park_Tour__c>();
-        List<Park_Of_Interest__c> coisForUpdate = new List<Park_Of_Interest__c>();
-        for (Park_Tour__c sv : newMap.values()) {
-            Park_Tour__c oldSV = oldMap.get(sv.Id);
-            if (sv.Park_Interest_Rating__c != oldSV.Park_Interest_Rating__c) {
-                if (!updateCOIList.contains(sv)) {
-                    updateCOIList.add(sv);
+        List<Park_Tour__c> updatePOIList = new List<Park_Tour__c>();
+        List<Park_Of_Interest__c> poisForUpdate = new List<Park_Of_Interest__c>();
+        for (Park_Tour__c pt : newMap.values()) {
+            Park_Tour__c oldPT = oldMap.get(pt.Id);
+            if (pt.Park_Interest_Rating__c != oldPT.Park_Interest_Rating__c) {
+                if (!updatePOIList.contains(pt)) {
+                    updatePOIList.add(pt);
                 }
             }
         }
 
-        if (updateCOIList != null && !updateCOIList.isEmpty()) {
-            coisForUpdate = ParkTourTrigger_Helper.updatCOIRating(updateCOIList);
+        if (updatePOIList != null && !updatePOIList.isEmpty()) {
+            poisForUpdate = ParkTourTrigger_Helper.updatPOIRating(updatePOIList);
         }
 
-        if (coisForUpdate != null && !coisForUpdate.isEmpty()) {
-            update coisForUpdate;
+        if (poisForUpdate != null && !poisForUpdate.isEmpty()) {
+            update poisForUpdate;
         }
     }
 }
