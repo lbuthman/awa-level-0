@@ -162,7 +162,7 @@ public without sharing class ParkTourTrigger_Helper {
                     for(Contact c : cons){
                         if(c.Id == pt.Contact__c){
                             //<Addition> - Flora - 31 July 2019
-                            //<Reason> Added accountId in Site visit record when any user manually creates site visit record </Reason>
+                            //<Reason> Added accountId in Park Tour record when any user manually creates tour record </Reason>
                             if(c.AccountId != null){
                                 pt.Account__c = c.AccountId;
                             }
