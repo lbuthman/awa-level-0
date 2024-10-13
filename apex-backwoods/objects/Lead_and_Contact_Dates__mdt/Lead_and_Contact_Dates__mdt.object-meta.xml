@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Maps lead and contact date fields with lead and contact statuses.</description>
+    <label>Lead and Contact Dates</label>
+    <pluralLabel>Lead and Contact Dates</pluralLabel>
+    <visibility>Public</visibility>
+</CustomObject>

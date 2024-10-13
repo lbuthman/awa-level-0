@@ -1,11 +1,15 @@
 {
   "packageDirectories": [
     {
+      "path": "force-app",
+      "default": true
+    },
+    {
       "versionName": "ver 0.1",
       "versionNumber": "0.1.0.NEXT",
-      "path": "force-app",
-      "default": true,
-      "package": "apex-backwoods",
+      "path": "./apex-backwoods",
+      "default": false,
+      "package": "Apex Backwoods Adventures",
       "versionDescription": ""
     }
   ],
@@ -14,6 +18,6 @@
   "sfdcLoginUrl": "https://login.salesforce.com",
   "sourceApiVersion": "61.0",
   "packageAliases": {
-    "apex-backwoods": "0Hoak0000000IGHCA2"
+    "Apex Backwoods Adventures": "0Hoak0000000IHtCAM"
   }
 }

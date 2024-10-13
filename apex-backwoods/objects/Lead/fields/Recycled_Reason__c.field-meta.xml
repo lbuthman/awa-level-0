@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Recycled_Reason__c</fullName>
+    <description>Lead can be recycled manually, but they require a reason. When the automation recycles them, the reason is provided by the automation.</description>
+    <externalId>false</externalId>
+    <label>Recycled Reason</label>
+    <length>255</length>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>
