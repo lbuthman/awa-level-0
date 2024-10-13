@@ -147,9 +147,11 @@ private class ParkOfInterestTrigger_Test {
         insert testContact2;
 
         Adventure_Park__c thePark = new Adventure_Park__c(Name = 'Test Site', Is_Active__c = true, Park_Number__c = '918273645278');
+        thePark.Open_Date__c = Date.today();
         insert thePark;
 
         Adventure_Park__c thePark2 = new Adventure_Park__c(Name = 'Test Site2', Is_Active__c = true, Park_Number__c = '918273645277');
+        thePark2.Open_Date__c = Date.today();
         insert thePark2;
 
         Park_Of_Interest__c theParkOfInterest = new Park_Of_Interest__c(
@@ -332,12 +334,15 @@ private class ParkOfInterestTrigger_Test {
         List<Adventure_Park__c> parkList = new List<Adventure_Park__c>();
 
         Adventure_Park__c thePark = new Adventure_Park__c(Name = 'Test Site', Is_Active__c = true, Park_Number__c = '918273645278');
+        thePark.Open_Date__c = Date.today();
         parkList.add(thePark);
 
         Adventure_Park__c thePark2 = new Adventure_Park__c(Name = 'Test Site2', Is_Active__c = true, Park_Number__c = '918273645279');
+        thePark2.Open_Date__c = Date.today();
         parkList.add(thePark2);
 
         Adventure_Park__c thePark3 = new Adventure_Park__c(Name = 'Test Site3', Is_Active__c = true, Park_Number__c = '918273645280');
+        thePark3.Open_Date__c = Date.today();
         parkList.add(thePark3);
         insert parkList;
 
@@ -485,4 +490,13 @@ private class ParkOfInterestTrigger_Test {
 
     }
     //</Addition> Levi - Sep 23, 2020
+
+    @TestSetup
+    static void setup() {
+        Pricebook2 standardPricebook = new Pricebook2(
+            Id = Test.getStandardPricebookId(),
+            IsActive = true
+        );
+        update standardPricebook;
+    }
 }

@@ -3,8 +3,7 @@ public class TempLeadTrigger_Test {
     @IsTest
     public static void createNewLead(){
         //Create park
-        Adventure_Park__c park = new Adventure_Park__c(Name = 'The Craggy Cliffs');
-        park.Park_Number__c = '123456789012';
+        Adventure_Park__c park = TestUtils.createNewPark('The Craggy Cliffs', '123456789012');
         insert park;
         //Create TempLead record
         Temp_Lead__c ld= new Temp_Lead__c();
@@ -52,8 +51,7 @@ public class TempLeadTrigger_Test {
         con.LastName = 'Hopeful';
         insert con;
         //Create park
-        Adventure_Park__c park = new Adventure_Park__c(Name = 'The Slippery Slopes');
-        park.Park_Number__c = '123456789012';
+        Adventure_Park__c park = TestUtils.createNewPark('The Slippery Slopes', '123456789012');
         insert park;
         //Create Opportunity record
         //todo: create opportunity
@@ -94,8 +92,7 @@ public class TempLeadTrigger_Test {
     @isTest
     public static void sameLeadIssue(){
         //Create park
-        Adventure_Park__c park = new Adventure_Park__c(Name = 'The Sinking Sands');
-        park.Park_Number__c = '123456789012';
+        Adventure_Park__c park = TestUtils.createNewPark('The Sinking Sands', '123456789012');
         insert park;
         //Create Lead
         Lead l = new Lead();
@@ -148,8 +145,7 @@ public class TempLeadTrigger_Test {
     @isTest
     public static void sameContactIssue(){
         //Create park
-        Adventure_Park__c park = new Adventure_Park__c(Name = 'The Pesky Peaks');
-        park.Park_Number__c = '123456789012';
+        Adventure_Park__c park = TestUtils.createNewPark('The Pesky Peaks', '123456789012');
         insert park;
         //Create Account
         Account acc = new Account(Name = 'Account 1');
@@ -207,8 +203,7 @@ public class TempLeadTrigger_Test {
     @isTest
     public static void sameLeadandContactIssue(){
         //Create park
-        Adventure_Park__c park = new Adventure_Park__c(Name = 'The Icy Glaciers');
-        park.Park_Number__c = '123456789012';
+        Adventure_Park__c park = TestUtils.createNewPark('The Icy Glaciers', '123456789012');
         insert park;
         //Create Account
         Account acc = new Account(Name = 'Account');

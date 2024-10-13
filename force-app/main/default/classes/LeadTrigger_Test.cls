@@ -39,14 +39,14 @@ private class LeadTrigger_Test {
 
     @IsTest static void leadTriggerTest2() {
 
-        Adventure_Park__c park = new Adventure_Park__c(Name = 'The Icy Glaciers');
+        Adventure_Park__c park = TestUtils.createNewPark('The Icy Glaciers', '234234234234');
         park.Is_Active__c = true;
-        park.Park_Number__c = '234234234234';
+        park.Open_Date__c = Date.today();
         insert park;
 
-        Adventure_Park__c park2 = new Adventure_Park__c(Name = 'The Pesky Peaks');
+        Adventure_Park__c park2 = TestUtils.createNewPark('The Pesky Peaks', '123123123123');
         park2.Is_Active__c = true;
-        park2.Park_Number__c = '123123123123';
+        park2.Open_Date__c = Date.today();
         insert park2;
 
         Lead lead = new Lead(
@@ -89,19 +89,19 @@ private class LeadTrigger_Test {
     @IsTest static void leadTriggerTest3() {
         OperatingHours opH = new OperatingHours(Name = 'US Hours');
         insert opH;
-        Adventure_Park__c park = new Adventure_Park__c(Name = 'The Icy Glaciers');
+        Adventure_Park__c park = TestUtils.createNewPark('The Icy Glaciers', '123123123123');
         park.Is_Active__c = true;
-        park.Park_Number__c = '123123123123';
+        park.Open_Date__c = Date.today();
         insert park;
 
-        Adventure_Park__c park2 = new Adventure_Park__c(Name = 'The Pesky Peaks');
+        Adventure_Park__c park2 = TestUtils.createNewPark('The Pesky Peaks', '234234234234');
         park2.Is_Active__c = true;
-        park2.Park_Number__c = '234234234234';
+        park2.Open_Date__c = Date.today();
         insert park2;
 
-        Adventure_Park__c park3 = new Adventure_Park__c(Name = 'The Sinking Sands');
+        Adventure_Park__c park3 = TestUtils.createNewPark('The Sinking Sands', '345345345345');
         park3.Is_Active__c = true;
-        park3.Park_Number__c = '345345345345';
+        park3.Open_Date__c = Date.today();
         insert park3;
 
         Lead l = new Lead(
@@ -170,10 +170,8 @@ private class LeadTrigger_Test {
     }
 
     @IsTest static void leadTriggerTest4() {
-        Adventure_Park__c park = new Adventure_Park__c(Name = 'The Icy Glaciers');
-        park.Park_Number__c = '123123123123';
+        Adventure_Park__c park = TestUtils.createNewPark('The Icy Glaciers', '123123123123');
         insert park;
-
 
         Lead l = new Lead(
             FirstName = 'Test',
@@ -266,11 +264,9 @@ private class LeadTrigger_Test {
 
         System.runAs (new User(Id = UserInfo.getUserId())) {
             Test.startTest();
-            Adventure_Park__c thePark = new Adventure_Park__c(
-                Name = 'Harpers Ferry',
-                Is_Active__c = true,
-                Park_Number__c = '123123123123'
-            );
+            Adventure_Park__c thePark = TestUtils.createNewPark('Harpers Ferry', '123123123123');
+            thePark.Is_Active__c = true;
+            thePark.Open_Date__c = Date.today();
             insert thePark;
 
             Lead testLead = new Lead(
@@ -500,14 +496,14 @@ private class LeadTrigger_Test {
         OperatingHours opH = new OperatingHours(Name = 'US Hours');
         insert opH;
 
-        Adventure_Park__c park = new Adventure_Park__c(Name = 'The Slippery Slopes');
+        Adventure_Park__c park = TestUtils.createNewPark('The Slippery Slopes', '123123123123');
         park.Is_Active__c = true;
-        park.Park_Number__c = '123123123123';
+        park.Open_Date__c = Date.today();
         insert park;
 
-        Adventure_Park__c park2 = new Adventure_Park__c(Name = 'The Craggy Cliffs');
+        Adventure_Park__c park2 = TestUtils.createNewPark('The Craggy Cliffs', '234234234234');
         park2.Is_Active__c = true;
-        park2.Park_Number__c = '234234234234';
+        park2.Open_Date__c = Date.today();
         insert park2;
 
         Lead testLead = new Lead(
