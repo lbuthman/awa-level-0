@@ -1,12 +1,19 @@
 {
   "packageDirectories": [
     {
+      "versionName": "ver 0.1",
+      "versionNumber": "0.1.0.NEXT",
       "path": "force-app",
-      "default": true
+      "default": true,
+      "package": "apex-backwoods",
+      "versionDescription": ""
     }
   ],
   "name": "apex-backwoods",
   "namespace": "",
   "sfdcLoginUrl": "https://login.salesforce.com",
-  "sourceApiVersion": "61.0"
+  "sourceApiVersion": "61.0",
+  "packageAliases": {
+    "apex-backwoods": "0Hoak0000000IGHCA2"
+  }
 }
