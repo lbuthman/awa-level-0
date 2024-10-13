@@ -63,9 +63,9 @@ public without sharing class ParkTourTrigger_Helper {
         }
     }
 
-    public static List<Park_Of_Interest__c> updatPOIRating(/*Set<Id> ptIds*/ List<Park_Tour__c> tours){//Passed site visit list to save one query - STDN-317 - Sarah - 09-07-20
+    public static List<Park_Of_Interest__c> updatPOIRating(/*Set<Id> ptIds*/ List<Park_Tour__c> tours){//Passed park tour list to save one query - STDN-317 - Sarah - 09-07-20
         /*List<Park_Tour__c> tours = [Select Id, Lead__c, Adventure_Park__c, Contact__c,
-                                      Park_Interest_Rating__c,  Community_of_Interest_Inactive_Reason__c
+                                      Park_Interest_Rating__c
                                       from Park_Tour__c where Id in :ptIds];*/
 
         Set<Id> communityIds = new Set<Id>();
@@ -170,8 +170,8 @@ public without sharing class ParkTourTrigger_Helper {
                             if(c.Park_Tour__r.size() == 0){
                                 break;
                             }else{
-                                for(Park_Tour__c exVisit : c.Park_Tour__r){
-                                    if(exVisit.Adventure_Park__c == pt.Adventure_Park__c){
+                                for(Park_Tour__c exTour : c.Park_Tour__r){
+                                    if(exTour.Adventure_Park__c == pt.Adventure_Park__c){
                                         pt.Return_Visitor__c = true;
                                         break;
                                     }
