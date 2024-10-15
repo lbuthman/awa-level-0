@@ -18,6 +18,7 @@
   "sfdcLoginUrl": "https://login.salesforce.com",
   "sourceApiVersion": "61.0",
   "packageAliases": {
-    "Apex Backwoods Adventures": "0Hoak0000000IHtCAM"
+    "Apex Backwoods Adventures": "0Hoak0000000IHtCAM",
+    "Apex Backwoods Adventures@0.1.0-1": "04tak0000003jobAAA"
   }
 }
