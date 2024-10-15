@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Disinterested_Reason__c</fullName>
+    <description>When the lead is no longer interested, a reason is required. This is used to help with future marketing effort.</description>
+    <externalId>false</externalId>
+    <label>Disinterested Reason</label>
+    <length>255</length>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Inactivated_Date__c</fullName>
+    <description>Most wonder why this field is here and on the park. Some say it is to make it easy to find records that were deactivated by automation, in case deactivating the Park was a user error.</description>
+    <label>Inactivated Date</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Date</type>
+</CustomField>

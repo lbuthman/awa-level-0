@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Arrival_Time__c</fullName>
+    <description>The datetime the lead/contact is expected at the park.Typically 30 min before the tour, if it is the first tour. Or at the tour start for subsequent tours. (currently unimplemented logic)</description>
+    <inlineHelpText>Has Todo!</inlineHelpText>
+    <label>Arrival Time</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>DateTime</type>
+</CustomField>

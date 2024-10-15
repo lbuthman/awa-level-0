@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomLabels xmlns="http://soap.sforce.com/2006/04/metadata">
+    <labels>
+        <fullName>Appointment_Task_Subjects</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Appointment Task Subjects</shortDescription>
+        <value>In Person Appointment, Virtual Appointment, Self Guided Appointment</value>
+    </labels>
+    <labels>
+        <fullName>Fake_Marketing_User</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Fake Marketing User</shortDescription>
+        <value>System Administrator</value>
+    </labels>
+</CustomLabels>

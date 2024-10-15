@@ -3,10 +3,22 @@
     {
       "path": "force-app",
       "default": true
+    },
+    {
+      "versionName": "ver 0.1",
+      "versionNumber": "0.1.0.NEXT",
+      "path": "./apex-backwoods",
+      "default": false,
+      "package": "Apex Backwoods Adventures",
+      "versionDescription": ""
     }
   ],
   "name": "apex-backwoods",
   "namespace": "",
   "sfdcLoginUrl": "https://login.salesforce.com",
-  "sourceApiVersion": "61.0"
+  "sourceApiVersion": "61.0",
+  "packageAliases": {
+    "Apex Backwoods Adventures": "0Hoak0000000IHtCAM",
+    "Apex Backwoods Adventures@0.1.0-1": "04tak0000003jobAAA"
+  }
 }

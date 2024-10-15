@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Coming_Soon_Park__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>This seems to indicate that a park the Contact is interested in has not been opened yet. But no one knows why it needs to be on the contact.</description>
+    <label>Coming Soon Park</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <type>Checkbox</type>
+</CustomField>

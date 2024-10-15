@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Most_Recent_Lead_Source__c</fullName>
+    <description>Leads come from many sources and will be updated to represent increased Lead engagement. This field shows the most recent touch point for the lead.</description>
+    <externalId>false</externalId>
+    <label>Most Recent Lead Source</label>
+    <length>255</length>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>
