@@ -53,3 +53,7 @@ apex-backwoods.iml
 
 # Personal
 tools
+
+/.illuminatedCloud/
+**/tsconfig*.json
+**/*.tsbuildinfo
