@@ -341,7 +341,7 @@ private class LeadTrigger_Test {
             System.assertEquals('Disinterested', leadAfterUpdate1.Status);
             System.assertEquals(leadListToInsert[0].Disinterested_Reason__c, leadAfterUpdate1.Disinterested_Reason_Z__c);
 
-            //Added one more Disinterested Reason for showing reasons in Disinterested Reason-H field
+            //Added one more Disinterested Reason for showing reasons in Disinterested Reason-Z field
             leadAfterUpdate1.Disinterested_Reason__c = 'Major life change upcoming';
             update leadAfterUpdate1;
             //Update lead status to "Disinterested" after entering Disinterested reason
@@ -360,7 +360,7 @@ private class LeadTrigger_Test {
             System.assertNotEquals(planner.Id, leadAfterUpdate3.OwnerId);
 
 
-            //Added one more revert reason for showing reasons in Revert Reason-H field
+            //Added one more revert reason for showing reasons in Revert Reason-Z field
             leadAfterUpdate3.Reprocessed_Reason__c = 'Fickle';
             update leadAfterUpdate3;
             //Update lead status to "Reprocessed" after entering Revert reason
@@ -463,7 +463,7 @@ private class LeadTrigger_Test {
             System.assertEquals('Disinterested', leadAfterUpdate1.Status);
             System.assertEquals(leadListToInsert[0].Disinterested_Reason__c, leadAfterUpdate1.Disinterested_Reason_Z__c);
 
-            //Added one more Disinterested Reason for showing reasons in Disinterested Reason-H field
+            //Added one more Disinterested Reason for showing reasons in Disinterested Reason-Z field
             leadAfterUpdate1.Disinterested_Reason__c = 'Going with another company';
             update leadAfterUpdate1;
             //Update lead status to "Disinterested" after entering Disinterested reason
@@ -481,7 +481,7 @@ private class LeadTrigger_Test {
             System.assertEquals(leadListToInsert[1].Reprocessed_Reason__c, leadAfterUpdate3.Reprocessed_Reason_Z__c);
 
 
-            //Added one more Reprocess reason for showing reasons in Reprocess Reason-H field
+            //Added one more Reprocess reason for showing reasons in Reprocess Reason-Z field
             leadAfterUpdate3.Reprocessed_Reason__c = 'New job, circle back in 1 month';
             update leadAfterUpdate3;
             //Update lead status to "Reprocess" after entering Reprocess reason
