@@ -32,9 +32,9 @@
         <converted>false</converted>
     </standardValue>
     <standardValue>
-        <fullName>Recycled</fullName>
+        <fullName>Reprocessed</fullName>
         <default>false</default>
-        <label>Recycled</label>
+        <label>Reprocessed</label>
         <converted>false</converted>
     </standardValue>
     <standardValue>
