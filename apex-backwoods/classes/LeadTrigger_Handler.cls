@@ -64,7 +64,7 @@ public with sharing class LeadTrigger_Handler {
 
             //If Planner user edits the record then assign the lead to Planner user and change the status to 'Engaged'
             if (!isChangedFromCode &&
-                !(oldLead.Recycled_Reason__c != l.Recycled_Reason__c) &&
+                !(oldLead.Reprocessed_Reason__c != l.Reprocessed_Reason__c) &&
                 !(oldLead.Disinterested_Reason__c != l.Disinterested_Reason__c)
             ) {
                 l.OwnerId = UserInfo.getUserId();
@@ -73,9 +73,9 @@ public with sharing class LeadTrigger_Handler {
             }
             if (
                 (oldLead.Disinterested_Reason__c != l.Disinterested_Reason__c && l.Disinterested_Reason__c != null) ||
-                    (l.Recycled_Reason__c != null && oldLead.Recycled_Reason__c != l.Recycled_Reason__c)
+                    (l.Reprocessed_Reason__c != null && oldLead.Reprocessed_Reason__c != l.Reprocessed_Reason__c)
             ) {
-                LeadTrigger_Helper.processRecycledAndDisinterestedLeads(l, oldLead);
+                LeadTrigger_Helper.processReprocessedAndDisinterestedLeads(l, oldLead);
                 isChangedFromCode = true;
             }
             if (oldLead.Status != l.Status) {
@@ -102,7 +102,7 @@ public with sharing class LeadTrigger_Handler {
         Set<Id> LeadIdsForLTUpdate = new Set<Id>();
         Set<Id> leadsForParkDOG = new Set<Id>();
         Set<Id> leadsForPark = new Set<Id>();
-        Set<Id> recycledLeadTasks = new Set<Id>();
+        Set<Id> reprocessedLeadTasks = new Set<Id>();
         Set<Id> agentLeadIDSet = new Set<Id>();
         List<Park_Of_Interest__c> parkOfIntrstListToUpdate = new List<Park_Of_Interest__c>();
 
@@ -110,12 +110,12 @@ public with sharing class LeadTrigger_Handler {
 
             Lead oldLead = oldLeadMap.get(lead.Id);
             if (!lead.IsConverted) {
-                if (lead.Recycled_Reason__c != null && lead.Recycled_Reason__c.left(9) == 'Different' &&
-                    ((oldLead.Recycled_Reason__c == null) ||
-                        (oldLead.Recycled_Reason__c != null && oldLead.Recycled_Reason__c.left(9) != 'Different'))) {
+                if (lead.Reprocessed_Reason__c != null && lead.Reprocessed_Reason__c.left(9) == 'Different' &&
+                    ((oldLead.Reprocessed_Reason__c == null) ||
+                        (oldLead.Reprocessed_Reason__c != null && oldLead.Reprocessed_Reason__c.left(9) != 'Different'))) {
                     if (isRunningOnce) {
                         isRunningOnce = false;
-                        recycledLeadTasks.add(lead.Id);
+                        reprocessedLeadTasks.add(lead.Id);
                     }
                 }
             }
@@ -133,8 +133,8 @@ public with sharing class LeadTrigger_Handler {
             }
         }
 
-        if (recycledLeadTasks.size() > 0) {
-            LeadTrigger_Helper.assignPlannerTasks(recycledLeadTasks);
+        if (reprocessedLeadTasks.size() > 0) {
+            LeadTrigger_Helper.assignPlannerTasks(reprocessedLeadTasks);
         }
 
         if (LeadIdsForLTUpdate.size() > 0) {

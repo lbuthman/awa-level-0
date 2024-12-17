@@ -8,15 +8,15 @@ public without sharing class LeadTrigger_Helper {
                     eachLead.put(each.Date_Field__c, System.today());
                 }
             }
-            //Update Lead Owner as "Marketing" when lead status is Recycled
-            if (eachLead.Status == 'Recycled') {
+            //Update Lead Owner as "Marketing" when lead status is Reprocessed
+            if (eachLead.Status == 'Reprocessed') {
                 User fakeMarketingUser = [SELECT Id FROM User WHERE Profile.Name = :System.Label.Fake_Marketing_User LIMIT 1];
                 eachLead.OwnerId = fakeMarketingUser.Id;
             }
         }
     }
 
-    public static void processRecycledAndDisinterestedLeads(Lead newLead, Lead oldLead) {
+    public static void processReprocessedAndDisinterestedLeads(Lead newLead, Lead oldLead) {
         List<Lead> leadsToAssignToPlanner = new List<Lead>();
 
         if (oldLead.Disinterested_Reason__c != newLead.Disinterested_Reason__c && newLead.Disinterested_Reason__c != null) {
@@ -37,30 +37,30 @@ public without sharing class LeadTrigger_Helper {
             }
         }
 
-        //Change lead status to Recycle if Reason is added
-        if (newLead.Recycled_Reason__c != null && oldLead.Recycled_Reason__c != newLead.Recycled_Reason__c) {
-            if (newLead.Recycled_Reason__c != 'Different park location' && newLead.Recycled_Reason__c != 'Different park price' && newLead.Recycled_Reason__c != 'Different park theme') {
-                newLead.Status = 'Recycled';
+        //Change lead status to Reprocess if Reason is added
+        if (newLead.Reprocessed_Reason__c != null && oldLead.Reprocessed_Reason__c != newLead.Reprocessed_Reason__c) {
+            if (newLead.Reprocessed_Reason__c != 'Different park location' && newLead.Reprocessed_Reason__c != 'Different park price' && newLead.Reprocessed_Reason__c != 'Different park theme') {
+                newLead.Status = 'Reprocessed';
                 User fakeMarketingUser = [SELECT Id FROM User WHERE Profile.Name = :System.Label.Fake_Marketing_User LIMIT 1];
                 newLead.OwnerId = fakeMarketingUser.Id;
             }
-            else if (newLead.Recycled_Reason__c == 'Different park location' || newLead.Recycled_Reason__c == 'Different park price' || newLead.Recycled_Reason__c == 'Different park theme') {
+            else if (newLead.Reprocessed_Reason__c == 'Different park location' || newLead.Reprocessed_Reason__c == 'Different park price' || newLead.Reprocessed_Reason__c == 'Different park theme') {
                 newLead.Status = 'Engaged';
                 leadsToAssignToPlanner.add(newLead);
             }
 
-            if (newLead.Recycled_Reason_Z__c == null) {
-                newLead.Recycled_Reason_Z__c = newLead.Recycled_Reason__c;
+            if (newLead.Reprocessed_Reason_Z__c == null) {
+                newLead.Reprocessed_Reason_Z__c = newLead.Reprocessed_Reason__c;
             }
             else {
-                if (newLead.Recycled_Reason_Z__c.contains(';')) {
-                    List<String> revertReason = newLead.Recycled_Reason_Z__c.split(';');
-                    if (revertReason[revertReason.size() - 1] != newLead.Recycled_Reason__c) {
-                        newLead.Recycled_Reason_Z__c += ';' + newLead.Recycled_Reason__c;
+                if (newLead.Reprocessed_Reason_Z__c.contains(';')) {
+                    List<String> revertReason = newLead.Reprocessed_Reason_Z__c.split(';');
+                    if (revertReason[revertReason.size() - 1] != newLead.Reprocessed_Reason__c) {
+                        newLead.Reprocessed_Reason_Z__c += ';' + newLead.Reprocessed_Reason__c;
                     }
                 }
-                else if (newLead.Recycled_Reason_Z__c != newLead.Recycled_Reason__c) {
-                    newLead.Recycled_Reason_Z__c += ';' + newLead.Recycled_Reason__c;
+                else if (newLead.Reprocessed_Reason_Z__c != newLead.Reprocessed_Reason__c) {
+                    newLead.Reprocessed_Reason_Z__c += ';' + newLead.Reprocessed_Reason__c;
                 }
             }
         }
@@ -106,7 +106,7 @@ public without sharing class LeadTrigger_Helper {
                         Task t = new Task(
                             OwnerId = u.Id,
                             Status = 'Not Started',
-                            Subject = 'Attn: Recycled Lead',
+                            Subject = 'Attn: Reprocessed Lead',
                             WhoId = l.Id,
                             ActivityDate = System.today().addDays(1));
 

@@ -283,7 +283,7 @@ private class LeadTrigger_Test {
                 Arrival_Time__c = System.now());
             insert tour;
 
-            testLead.Recycled_Reason__c = 'Different park theme';
+            testLead.Reprocessed_Reason__c = 'Different park theme';
             update testLead;
 
             Test.stopTest();
@@ -351,23 +351,23 @@ private class LeadTrigger_Test {
 
             //Recycle Status
 
-            leadListToInsert[1].Recycled_Reason__c = 'Interested in other Parks';
+            leadListToInsert[1].Reprocessed_Reason__c = 'Interested in other Parks';
             update leadListToInsert[1];
             //Update lead status to "Recycled" after entering Revert reason
-            Lead leadAfterUpdate3 = [SELECT Id, Name, Status, Recycled_Reason__c, Recycled_Reason_Z__c, OwnerId FROM Lead WHERE Id = :leadListToInsert[1].Id];
+            Lead leadAfterUpdate3 = [SELECT Id, Name, Status, Reprocessed_Reason__c, Reprocessed_Reason_Z__c, OwnerId FROM Lead WHERE Id = :leadListToInsert[1].Id];
             System.assertEquals('Recycled', leadAfterUpdate3.Status);
-            System.assertEquals(leadListToInsert[1].Recycled_Reason__c, leadAfterUpdate3.Recycled_Reason_Z__c);
+            System.assertEquals(leadListToInsert[1].Reprocessed_Reason__c, leadAfterUpdate3.Reprocessed_Reason_Z__c);
             System.assertNotEquals(planner.Id, leadAfterUpdate3.OwnerId);
 
 
             //Added one more revert reason for showing reasons in Revert Reason-H field
-            leadAfterUpdate3.Recycled_Reason__c = 'Fickle';
+            leadAfterUpdate3.Reprocessed_Reason__c = 'Fickle';
             update leadAfterUpdate3;
             //Update lead status to "Recycled" after entering Revert reason
-            Lead leadAfterUpdate4 = [SELECT Id, Name, Status, Recycled_Reason__c, Recycled_Reason_Z__c, OwnerId FROM Lead WHERE Id = :leadAfterUpdate3.Id];
+            Lead leadAfterUpdate4 = [SELECT Id, Name, Status, Reprocessed_Reason__c, Reprocessed_Reason_Z__c, OwnerId FROM Lead WHERE Id = :leadAfterUpdate3.Id];
             System.assertEquals('Recycled', leadAfterUpdate4.Status);
             System.assertNotEquals(planner.Id, leadAfterUpdate4.OwnerId);
-            System.assertEquals(leadAfterUpdate3.Recycled_Reason_Z__c + ';' + leadAfterUpdate4.Recycled_Reason__c, leadAfterUpdate4.Recycled_Reason_Z__c);
+            System.assertEquals(leadAfterUpdate3.Reprocessed_Reason_Z__c + ';' + leadAfterUpdate4.Reprocessed_Reason__c, leadAfterUpdate4.Reprocessed_Reason_Z__c);
         }
     }
 
@@ -394,7 +394,7 @@ private class LeadTrigger_Test {
             Lead leadAfterInsert = [SELECT Id, Name, Status FROM Lead WHERE Id = :lead.Id];
             System.assertEquals('New', leadAfterInsert.Status);
 
-            //l.Recycled_Reason__c = 'Different park location';
+            //l.Reprocessed_Reason__c = 'Different park location';
             //UPDATE l;
         }
     }
@@ -410,27 +410,27 @@ private class LeadTrigger_Test {
 
         System.runAs(plannerUser) {
             //Add Recycled Reason to the lead
-            lead.Recycled_Reason__c = 'Different park location';
+            lead.Reprocessed_Reason__c = 'Different park location';
             update lead;
 
             //Update lead status to 'Engaged'
-            Lead leadAfterUpdate1 = [SELECT Id, Name, Status, Recycled_Reason__c FROM Lead WHERE Id = :lead.Id];
+            Lead leadAfterUpdate1 = [SELECT Id, Name, Status, Reprocessed_Reason__c FROM Lead WHERE Id = :lead.Id];
             System.assertEquals('Engaged', leadAfterUpdate1.Status);
 
             //Add one more Recycle Reason to the lead
-            lead.Recycled_Reason__c = 'Different park price';
+            lead.Reprocessed_Reason__c = 'Different park price';
             update lead;
 
             //Update lead status to 'Engaged'
-            Lead leadAfterUpdate2 = [SELECT Id, Name, Status, Recycled_Reason__c FROM Lead WHERE Id = :lead.Id];
+            Lead leadAfterUpdate2 = [SELECT Id, Name, Status, Reprocessed_Reason__c FROM Lead WHERE Id = :lead.Id];
             System.assertEquals('Engaged', leadAfterUpdate2.Status);
 
             //Add one more Recycle Reason to the lead
-            lead.Recycled_Reason__c = 'Different park theme';
+            lead.Reprocessed_Reason__c = 'Different park theme';
             update lead;
 
             //Update lead status to 'Engaged'
-            Lead leadAfterUpdate3 = [SELECT Id, Name, Status, Recycled_Reason__c FROM Lead WHERE Id = :lead.Id];
+            Lead leadAfterUpdate3 = [SELECT Id, Name, Status, Reprocessed_Reason__c FROM Lead WHERE Id = :lead.Id];
             System.assertEquals('Engaged', leadAfterUpdate3.Status);
         }
 
@@ -473,21 +473,21 @@ private class LeadTrigger_Test {
 
             //Recycle Status
             //Added Recycle Reason in the lead
-            leadListToInsert[1].Recycled_Reason__c = 'Changing vacation destination';
+            leadListToInsert[1].Reprocessed_Reason__c = 'Changing vacation destination';
             update leadListToInsert[1];
             //Update lead status to "Recycle" after entering Recycle reason
-            Lead leadAfterUpdate3 = [SELECT Id, Name, Status, Recycled_Reason__c, Recycled_Reason_Z__c, Owner.Profile.Name FROM Lead WHERE Id = :leadListToInsert[1].Id];
+            Lead leadAfterUpdate3 = [SELECT Id, Name, Status, Reprocessed_Reason__c, Reprocessed_Reason_Z__c, Owner.Profile.Name FROM Lead WHERE Id = :leadListToInsert[1].Id];
             System.assertEquals('Recycled', leadAfterUpdate3.Status);
-            System.assertEquals(leadListToInsert[1].Recycled_Reason__c, leadAfterUpdate3.Recycled_Reason_Z__c);
+            System.assertEquals(leadListToInsert[1].Reprocessed_Reason__c, leadAfterUpdate3.Reprocessed_Reason_Z__c);
 
 
             //Added one more Recycle reason for showing reasons in Recycle Reason-H field
-            leadAfterUpdate3.Recycled_Reason__c = 'New job, circle back in 1 month';
+            leadAfterUpdate3.Reprocessed_Reason__c = 'New job, circle back in 1 month';
             update leadAfterUpdate3;
             //Update lead status to "Recycle" after entering Recycle reason
-            Lead leadAfterUpdate4 = [SELECT Id, Name, Status, Recycled_Reason__c, Recycled_Reason_Z__c, Owner.Profile.Name FROM Lead WHERE Id = :leadAfterUpdate3.Id];
+            Lead leadAfterUpdate4 = [SELECT Id, Name, Status, Reprocessed_Reason__c, Reprocessed_Reason_Z__c, Owner.Profile.Name FROM Lead WHERE Id = :leadAfterUpdate3.Id];
             System.assertEquals('Recycled', leadAfterUpdate4.Status);
-            System.assertEquals(leadAfterUpdate3.Recycled_Reason_Z__c + ';' + leadAfterUpdate4.Recycled_Reason__c, leadAfterUpdate4.Recycled_Reason_Z__c);
+            System.assertEquals(leadAfterUpdate3.Reprocessed_Reason_Z__c + ';' + leadAfterUpdate4.Reprocessed_Reason__c, leadAfterUpdate4.Reprocessed_Reason_Z__c);
         }
     }
 
