@@ -250,17 +250,17 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Lead.Recycled_Date__c</field>
+        <field>Lead.Reprocessed_Date__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Lead.Recycled_Reason_Z__c</field>
+        <field>Lead.Reprocessed_Reason_Z__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Lead.Recycled_Reason__c</field>
+        <field>Lead.Reprocessed_Reason__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
