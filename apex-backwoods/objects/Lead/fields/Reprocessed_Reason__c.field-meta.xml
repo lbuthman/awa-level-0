@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
-    <fullName>Recycled_Reason_Z__c</fullName>
-    <description>A field that might be used by marketing.</description>
+    <fullName>Reprocessed_Reason__c</fullName>
+    <description>Lead can be reprocessed manually, but they require a reason. When the automation reprocesses them, the reason is provided by the automation.</description>
     <externalId>false</externalId>
-    <label>Recycled Reason Z</label>
+    <label>Reprocessed Reason</label>
     <length>255</length>
     <required>false</required>
     <trackFeedHistory>false</trackFeedHistory>
