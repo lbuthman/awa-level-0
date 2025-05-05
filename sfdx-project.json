@@ -7,20 +7,17 @@
     {
       "versionName": "ver 0.1",
       "versionNumber": "0.1.0.NEXT",
-      "path": "./apex-backwoods",
+      "path": "apex-wilderness",
       "default": false,
-      "package": "Apex Backwoods Adventures",
-      "versionDescription": ""
+      "package": "Apex Wilderness Adventures",
+      "versionDescription": "This is the type of code you are likely to run into in the real-world Salesforce Wilderness. Rarely is code as cleaned and well-designed as what comes from trailhead or curated sources. This presevered wilderness is intended to be used as a place to practice refactoring, redesign, and maintenance skills. All other uses are considered out-of-scope."
     }
   ],
-  "name": "apex-backwoods",
   "namespace": "",
   "sfdcLoginUrl": "https://login.salesforce.com",
-  "sourceApiVersion": "61.0",
+  "sourceApiVersion": "63.0",
   "packageAliases": {
-    "Apex Backwoods Adventures": "0Hoak0000000IHtCAM",
-    "Apex Backwoods Adventures@0.1.0-1": "04tak0000003jobAAA",
-    "Apex Backwoods Adventures@0.1.0-3": "04tak0000004ydVAAQ",
-    "Apex Backwoods Adventures@0.1.0-4": "04tak0000004yf7AAA"
+    "Apex Wilderness Adventures": "0Hoak0000000VYTCA2",
+    "Apex Wilderness Adventures@0.1.0-1": "04tak0000008Hq5AAE"
   }
 }
