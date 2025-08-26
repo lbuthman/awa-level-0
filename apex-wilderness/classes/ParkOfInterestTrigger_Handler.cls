@@ -42,9 +42,9 @@ public with sharing class ParkOfInterestTrigger_Handler {
         }
 
 
-        for (Park_Of_Interest__c CommunityOfInterestRecord : newList) {
-            if (inrstInactiveParkIds.contains(CommunityOfInterestRecord.Adventure_Park__c)) {
-                CommunityOfInterestRecord.Inactive__c = true;
+        for (Park_Of_Interest__c parksOfInterestRecord : newList) {
+            if (inrstInactiveParkIds.contains(parksOfInterestRecord.Adventure_Park__c)) {
+                parksOfInterestRecord.Inactive__c = true;
             }
         }
 

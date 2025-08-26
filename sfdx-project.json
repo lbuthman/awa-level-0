@@ -10,7 +10,7 @@
       "path": "apex-wilderness",
       "default": false,
       "package": "Apex Wilderness Adventures",
-      "versionDescription": "This is the type of code you are likely to run into in the real-world Salesforce Wilderness. Rarely is code as cleaned and well-designed as what comes from trailhead or curated sources. This presevered wilderness is intended to be used as a place to practice refactoring, redesign, and maintenance skills. All other uses are considered out-of-scope."
+      "versionDescription": "This is the type of code you are likely to run into in the real-world Salesforce Wilderness. Rarely is code as cleaned and well-designed as what comes from trailhead or curated sources. This persevered wilderness is intended to be used as a place to practice refactoring, redesign, and maintenance skills. All other uses are considered out-of-scope."
     }
   ],
   "namespace": "",
