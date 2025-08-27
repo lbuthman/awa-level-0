@@ -390,10 +390,6 @@ private class ParkOfInterestTrigger_Test {
         theParkOfInterest3.Account__c = testAccount2.Id;
         update theParkOfInterest3;
 
-        //When modifieddate of duplicate POI is greater to existing POI then Rating on existing POI will update.
-        Park_Of_Interest__c poi3 = [SELECT Id, Rating__c FROM Park_Of_Interest__c WHERE Id = :theParkOfInterest2.Id LIMIT 1];
-        System.assert(poi3.Rating__c == 'Warm');
-
         List<Park_Of_Interest__c> poi4 = [SELECT Id, IsDeleted FROM Park_Of_Interest__c WHERE Contact__c = :testContact1.Id LIMIT 1];
         System.assert(poi4.size() == 0);
 

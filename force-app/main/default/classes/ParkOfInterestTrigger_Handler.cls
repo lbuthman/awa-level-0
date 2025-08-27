@@ -96,8 +96,6 @@ public with sharing class ParkOfInterestTrigger_Handler {
             ParkOfInterestTrigger_Helper.createContactPOIs(newPOIlist);
         }
 
-        ParkOfInterestTrigger_Helper.replicateParkOfInterestToPartners(Trigger.new, null, null);
-
         if (newMap != null && !newMap.isEmpty() && parkIds != null && !parkIds.isEmpty() && contactIds != null && !contactIds.isEmpty()) {
             ParkOfInterestTrigger_Helper.deleteduplicatePOI(newMap, oldMap, parkIds, contactIds);
         }
@@ -165,8 +163,6 @@ public with sharing class ParkOfInterestTrigger_Handler {
         if (convertedLists.size() > 0) {
             ParkOfInterestTrigger_Helper.createContactPOIs(convertedLists);
         }
-
-        ParkOfInterestTrigger_Helper.replicateParkOfInterestToPartners(Trigger.new, null, null);
 
         if (newMap != null && !newMap.isEmpty() && parkIds != null && !parkIds.isEmpty() && contactIds != null && !contactIds.isEmpty()) {
             ParkOfInterestTrigger_Helper.deleteduplicatePOI(newMap, oldMap, parkIds, contactIds);
