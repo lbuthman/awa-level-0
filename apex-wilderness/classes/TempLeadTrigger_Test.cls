@@ -218,7 +218,7 @@ public class TempLeadTrigger_Test {
         Lead l1 = new Lead();
         l1.Email = 'holly.hopeful@test.com';
         l1.LastName = 'Hopeful';
-        l1.firstName = 'Holly1';
+        l1.firstName = 'Holly';
         l1.Company = 'Unaffiliated';
         Database.DMLOptions dml = new Database.DMLOptions();
         dml.DuplicateRuleHeader.AllowSave = true;
