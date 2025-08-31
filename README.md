@@ -37,5 +37,5 @@ environment, where you don't have to worry about breaking production business pr
 
 ## Install the Package
 
-[![Install Unlocked Package in a Sandbox](./images/btn-install-unlocked-package-sandbox.png)](https://test.salesforce.com/packaging/installPackage.apexp?p0=04tak0000008Hq5AAE)
+[![Install Unlocked Package in a Sandbox](./images/btn-install-unlocked-package-sandbox.png)](https://test.salesforce.com/packaging/installPackage.apexp?p0=04tak0000009X4nAAE)
 

@@ -49,6 +49,192 @@ public without sharing class ParkOfInterestTrigger_Helper {
     }
     //</Addition> Quinn Query - 23-10-2018
 
+    //After Insert/Update Method to replicate POI Records to Partners
+    public static void replicateParkOfInterestToPartners(List<Park_Of_Interest__c> poiRecords, Set<Id> leadIds, Set<Id> accountIds) {
+        //Method Variables
+        Set<ID> leadSet = new Set<ID>();
+        Map<ID,ID> leadIntMap =  new Map<ID,ID>();
+        Set<ID> accSet = new Set<ID>();
+        Set<ID> partnerSet = new Set<ID>();
+        Map<ID,ID> leadPartnerMap = new Map<ID,ID>();
+        Map<ID,ID> accIntMap = new Map<ID,ID>();
+        Map<ID,Set<ID>> partnerIntMap = new Map<ID,Set<ID>>();
+        Map<Id, Set<String>> ratingMap = new Map<Id, Set<String>>();
+        Map<ID,Set<ID>> currentPartnerIntMap = new Map<ID,Set<ID>>();
+        Map<ID,ID> accPartnerMap = new Map<ID,ID>();
+        List<Park_Of_Interest__c> pois = new List<Park_Of_Interest__c>();
+        //Set<Id> intIds = new Set<Id>();
+        List<Park_Of_Interest__c> poiList= new List<Park_Of_Interest__c>();
+
+        if(poiRecords!=null && !poiRecords.isEmpty()){
+            for (Park_Of_Interest__c poi : poiRecords) {
+                //<Modification> Flora - 13-07-2020 - Add Park of Interest record in a List instead of Passing Id to a Set as per STDN-317
+                //intIds.add(poi.Id);
+                if(!poiList.contains(poi)){
+                    poiList.add(poi);
+                }
+                //</Modification>
+            }
+        }
+
+        //Flora- STDN-109 - 18-05-20 - Added the below query to fetch Account's type
+        if(leadIds!= null && !leadIds.isEmpty())
+            poiList= [SELECT Id, Lead__c, Account__c, Account_Type__c, account__r.Type, Contact__c, Adventure_Park__c, Rating__c FROM Park_Of_Interest__c WHERE Lead__c IN :leadIds];
+        if(accountIds != null && !accountIds.isEmpty())
+            poiList= [SELECT Id, Lead__c, Account__c, Account_Type__c, account__r.Type, Contact__c, Adventure_Park__c, Rating__c FROM Park_Of_Interest__c WHERE Account__c IN :accountIds];
+        //<Modification> Flora - 13-07-2020 - Add Park_Of_Interest__c record in a List instead of Passing Id to a Set to save this query as per STDN-317
+        /*if(intIds != null && !intIds.isEmpty())
+            poiList= [Select Id, Lead__c, Account__c,account__r.Type, Contact__c, Adventure_Park__c, Rating__c from Park_Of_Interest__c where Id IN :intIds];*/
+        //</Modification>
+        if(poiList != null && !poiList.isEmpty()){
+            for(Park_Of_Interest__c poi : poiList){
+                if (poi.Lead__c != null) {
+                    leadSet.add(poi.Lead__c);
+                    leadIntMap.put(poi.Lead__c,poi.Adventure_Park__c);
+                }
+                if (poi.account__c != null) {
+                    //put this check to fill the Partner Set because if the lead is converted into an Partner account
+                    //it will neither go in line no.81 nor in line no. 94 and the Partner set will be empty
+                    //due to which we won't be able to fetch the POI records present under the Partner account
+                    //Flora - 18-05-20 - STDN-109
+                    //<Modification> Flora - 13-07-2020 - fetch account type from a field created on Park_Of_Interest__c instead from SOQL to save a query as per STDN-317
+                    if(poi.Account_Type__c != null && poi.Account_Type__c == 'Partner'){
+                        partnerSet.add(poi.account__c);
+                    }
+                    //<Modification>
+                    else{
+                        accSet.add(poi.Account__c);
+                        accIntMap.put(poi.Account__c,poi.Adventure_Park__c);
+                    }
+                }
+            }
+        }
+        if(leadSet != null && !leadSet.isEmpty()){ //Added null check as per STDN-199 by Flora - 08-04-20
+            for (Lead l : [SELECT id, isconverted, Partner_Account__c FROM Lead WHERE id IN : leadSet AND Partner_Account__c <> NULL ]) {
+                leadPartnerMap.put(l.id,l.Partner_Account__c);
+                partnerSet.add(l.Partner_Account__c);
+            }
+        }
+
+        if(poiList != null && !poiList.isEmpty()){
+            for (Park_Of_Interest__c poi : poiList){
+                if (poi.Lead__c != null && leadPartnerMap.containsKey(poi.Lead__c)) {
+                    ID partnerID = leadPartnerMap.get(poi.Lead__c);
+                    if (partnerIntMap.containsKey(partnerID)) {
+                        Set<ID> intSet = partnerIntMap.get(partnerID);
+                        intSet.add(poi.Adventure_Park__c);
+                        partnerIntMap.put(partnerID,intSet);
+
+                        //<Addition> 13-05-20 Flora
+                        //<Reason> Rating field was getting populated as blank on POI record of partner contact and account
+                        //that's why added below code in order to populate it there as per STDN-109
+                        Set<String> ratingSet = ratingMap.get(partnerID);
+                        ratingSet.add(poi.rating__c);
+                        ratingMap.put(partnerID,ratingSet);
+                        //</Reason>
+                        //</Addition> 13-05-20
+
+                    }
+                    else {
+                        //<Addition> 13-05-20 Flora
+                        //<Reason> Rating field was getting populated as blank on POI record of partner contact and account
+                        //that's why added below code in order to populate it there as per STDN-109
+                        Set<String> ratingSet = new Set<String>();
+                        ratingSet.add(poi.rating__c);
+                        ratingMap.put(partnerID,ratingSet);
+                        //</Reason>
+                        //</Addition> 13-05-20
+
+                        Set<ID> intSet = new Set<ID>();
+                        intSet.add(poi.Adventure_Park__c);
+                        partnerIntMap.put(partnerID,intSet);
+                    }
+                }
+                if (poi.Account__c != null && accPartnerMap.containsKey(poi.Account__c)) {
+                    ID brokerID = accPartnerMap.get(poi.Account__c);
+                    if (partnerIntMap.containsKey(brokerID)) {
+
+                        //<Addition> 13-05-20 Flora
+                        //<Reason> Rating field was getting populated as blank on POI record of partner contact and account
+                        //that's why added below code in order to populate it there as per STDN-109
+                        Set<String> ratingSet = ratingMap.get(brokerID);
+                        ratingSet.add(poi.rating__c);
+                        ratingMap.put(brokerID,ratingSet);
+                        //</Reason>
+                        //</Addition> 13-05-20
+
+                        Set<ID> intSet = partnerIntMap.get(brokerID);
+                        intSet.add(poi.Adventure_Park__c);
+                        partnerIntMap.put(brokerID,intSet);
+                    }
+                    else {
+                        //<Addition> 13-05-20 Flora
+                        //<Reason> Rating field was getting populated as blank on POI record of partner contact and account
+                        //that's why added below code in order to populate it there as per STDN-109
+                        Set<String> ratingSet = new Set<String>();
+                        ratingSet.add(poi.rating__c);
+                        ratingMap.put(brokerID,ratingSet);
+                        //</Reason>
+                        //</Addition> 13-05-20
+
+                        Set<ID> intSet = new Set<ID>();
+                        intSet.add(poi.Adventure_Park__c);
+                        partnerIntMap.put(brokerID,intSet);
+                    }
+
+                }
+            }
+        }
+        if(partnerSet != null && !partnerSet.isEmpty()){ //Added null check as per STDN-199 by Flora - 08-04-20
+            for (Park_Of_Interest__c poi : [SELECT id,lead__c, Adventure_Park__c, Account__c FROM Park_Of_Interest__c WHERE Account__c IN : partnerSet]) {
+                if (currentPartnerIntMap.containsKey(poi.Account__c)) {
+                    Set<ID> intSet = currentPartnerIntMap.get(poi.Account__c);
+                    intSet.add(poi.Adventure_Park__c);
+                    currentPartnerIntMap.put(poi.Account__c,intSet);
+                }
+                else {
+                    Set<ID> intSet = new Set<ID>();
+                    intSet.add(poi.Adventure_Park__c);
+                    currentPartnerIntMap.put(poi.Account__c,intSet);
+                }
+                //Added by Flora 18-05-20 as per STDN-109 to fetch the POI records present on Lead
+                if (currentPartnerIntMap.containsKey(poi.Lead__c)) {
+                    Set<ID> intSet = currentPartnerIntMap.get(poi.Lead__c);
+                    intSet.add(poi.Adventure_Park__c);
+                    currentPartnerIntMap.put(poi.Lead__c,intSet);
+                }
+                else {
+                    Set<ID> intSet = new Set<ID>();
+                    intSet.add(poi.Adventure_Park__c);
+                    currentPartnerIntMap.put(poi.Lead__c,intSet);
+                }
+                //End 18-05-20
+            }
+        }
+
+        for (ID id : partnerIntMap.keySet()) {
+            Set<ID> leadIntSet = partnerIntMap.get(id);
+            Set<ID> currentSet = currentPartnerIntMap.get(id);
+            Set<String> POIrating = ratingMap.get(id);
+
+            for (ID s : leadIntSet) {
+                for(String rate : POIrating ){ //13-05-20 - Flora - to get rating value on POI record of partner account/contact as per STDN-109
+                    //13-05-20 - Flora - create new POI only if it's park is different from existing POI's park as per STDN-109
+                    if (currentSet == null || currentSet.isEmpty()) {
+                        Park_Of_Interest__c poi = new Park_Of_Interest__c(Account__c = id, Adventure_Park__c = s, Rating__c = rate );
+                        pois.add(poi);
+                    }else if(currentSet != null && !currentSet.isEmpty() && !currentSet.contains(s)){
+                        Park_Of_Interest__c poi = new Park_Of_Interest__c(Account__c = id, Adventure_Park__c = s, Rating__c = rate );
+                        pois.add(poi);
+                    }
+                }
+            }
+        }
+        if(pois != null && !pois.isEmpty()){
+            insert pois;
+        }
+    }
+
     public static void synchronizeParkOfInterestContact(Map<Park_Of_Interest__c,Id> parkOfInterestToAccountMap) {
         Map<Id, Id> AccountToContactMap = new Map<Id, Id>();
 
