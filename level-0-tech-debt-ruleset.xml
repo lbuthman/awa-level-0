@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+
+<ruleset name="Custom Rules"
+         xmlns="http://pmd.sourceforge.net/ruleset/2.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 https://pmd.sourceforge.io/ruleset_2_0_0.xsd">
+
+  <description>
+    A collection of the most relevant rules to understand Tech Debt for one particular class file.
+  </description>
+
+  <rule ref="category/apex/bestpractices.xml/ApexUnitTestClassShouldHaveAsserts" /> <!-- Ineffectual Test -->
+  <rule ref="category/apex/design.xml/CognitiveComplexity"> <!-- Cost to Understand & Maintain -->
+    <properties>
+      <property name="classReportLevel" value="9999" />
+      <property name="methodReportLevel" value="15" />
+    </properties>
+  </rule>
+  <rule ref="category/apex/design.xml/CyclomaticComplexity"> <!-- Cost to Change & Test -->
+    <properties>
+      <property name="classReportLevel" value="9999" />
+      <property name="methodReportLevel" value="10" />
+    </properties>
+  </rule>
+  <rule ref="category/apex/bestpractices.xml/UnusedLocalVariable" /> <!-- Code Smell -->
+  <rule ref="category/apex/codestyle.xml/ForLoopsMustUseBraces" /> <!-- Code Smell -->
+  <rule ref="category/apex/codestyle.xml/IfElseStmtsMustUseBraces" /> <!-- Code Smell -->
+  <rule ref="category/apex/codestyle.xml/IfStmtsMustUseBraces" /> <!-- Code Smell -->
+  <rule ref="category/apex/codestyle.xml/OneDeclarationPerLine" /> <!-- Code Smell -->
+  <rule ref="category/apex/codestyle.xml/WhileLoopsMustUseBraces" /> <!-- Code Smell -->
+  <rule ref="category/apex/design.xml/AvoidDeeplyNestedIfStmts" /> <!-- Code Smell -->
+  <rule ref="category/apex/design.xml/ExcessiveParameterList" /> <!-- Code Smell -->
+  <rule ref="category/apex/design.xml/NcssMethodCount" /> <!-- Code Smell -->`
+<!--  <rule ref="category/apex/design.xml/UnusedMethod" /> &lt;!&ndash; Code Smell &ndash;&gt;-->
+  <rule ref="category/apex/errorprone.xml/EmptyCatchBlock" /> <!-- Code Smell -->
+  <rule ref="category/apex/errorprone.xml/EmptyIfStmt" /> <!-- Code Smell -->
+  <rule ref="category/apex/errorprone.xml/EmptyStatementBlock" /> <!-- Code Smell -->
+  <rule ref="category/apex/errorprone.xml/EmptyTryOrFinallyBlock" /> <!-- Code Smell -->
+  <rule ref="category/apex/errorprone.xml/EmptyWhileStmt" /> <!-- Code Smell -->
+  <rule ref="category/apex/bestpractices.xml/ApexUnitTestMethodShouldHaveIsTestAnnotation" /> <!-- Bad Practice -->
+  <rule ref="category/apex/bestpractices.xml/ApexUnitTestShouldNotUseSeeAllDataTrue" /> <!-- Bad Practice -->
+  <rule ref="category/apex/bestpractices.xml/AvoidLogicInTrigger" /> <!-- Bad Practice -->
+  <rule ref="category/apex/errorprone.xml/AvoidDirectAccessTriggerMap" /> <!-- Bad Practice -->
+  <rule ref="category/apex/errorprone.xml/AvoidHardcodingId" /> <!-- Bad Practice -->
+  <rule ref="category/apex/errorprone.xml/AvoidNonExistentAnnotations" /> <!-- Bad Practice -->
+  <rule ref="category/apex/errorprone.xml/MethodWithSameNameAsEnclosingClass" /> <!-- Bad Practice -->
+  <rule ref="category/apex/errorprone.xml/OverrideBothEqualsAndHashcode" /> <!-- Bad Practice -->
+  <rule ref="category/apex/performance.xml/AvoidDebugStatements" /> <!-- Bad Practice -->
+  <rule ref="category/apex/performance.xml/OperationWithLimitsInLoop" /> <!-- Bad Practice -->
+</ruleset>
