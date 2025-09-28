@@ -12,21 +12,25 @@
 
 This package contains a wild, but not atypical, state of Apex automation. The logic is complex, the design choices are
 inconsistent, and tests lack a greater purpose beyond merely code coverage. When Apex code, design, and architecture
-fall into this level, what I call Level 0, every change, bug fix, or question that needs to be answered about it
-takes longer and is less certain. All this equates to a higher cost of development.
+fall into this level, what I call Level 0, every change, bug fix, or question takes longer and is less certain. All this
+equates to a higher cost of development.
 
-That said, the code in this org represents hundreds of hours of Apex development and investment by "the business". The
-worst thing a team or business could do would be to "burn it down" and start over. Doing it "right this time". The 
+That said, the code in this org represents "hundreds" of hours of Apex development and investment by "the business". The
+worst thing a team or business could do would be to "burn it down" and start over. Doing it "right _this_ time". The
 tougher reality is that code entropy and technical debt are natural byproducts of development. They cannot be factored
 out of the SDLC, but instead must be factored in. They will happen, as certain as death and taxes.
 
-Therefore, our goal is to learn how to work with, transform, and manage the inherent complexity of this level of code. 
-The better we are at turning rotten, collapsed, and complex code into simple, readable, and maintainable, the better 
-value we will provide to the businesses we work for.
+Therefore, our goal is to learn how to work with, transform, and manage the inherent complexity of this level of code.
+The better we are at turning rotten, collapsed, and complex code into simple, readable, and maintainable code, the
+better value we will produce.
 
-This package can be used as a training ground to learn essential skills in refactoring towards understanding and 
-redesigning Apex towards higher levels of design. It provides a resource to practice maintenance skills in a safe
-environment, where you don't have to worry about breaking production business processes.
+This package can be used as a training ground to learn essential skills in refactoring. You will learn to refactor
+towards understanding, and you will learn how to redesign towards higher levels of design. Refactoring is a core 
+intermediate level code skill. Developing the skill is very hard in the typical org, for fear of change, delay, or 
+speed cost.
+
+The AW (Apex Wilderness) provides a safe space to learn this critical skill. You will not break anything in production
+or lower environments. And it is extraordinarily easy to start over. 
 
 ## Getting Started
 
