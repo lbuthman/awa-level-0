@@ -1,4 +1,4 @@
-# Welcome to the Apex Wilderness Adventures!
+# Welcome to the Apex Wilderness!
 
 > ## This rock I ascended
 >
